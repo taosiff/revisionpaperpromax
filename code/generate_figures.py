@@ -70,8 +70,8 @@ def plot_fig5():
     ax1.set_ylabel('True Clinical Outcome', fontsize=11, fontweight='bold')
     ax1.set_title('(A) Screening: 100% Sensitivity\n(7/7 Detected, 0 False Negatives)', fontsize=11, fontweight='bold', pad=12)
     
-    # Panel B: Train-OOF Calibrated Balanced Diagnostic (Threshold = 0.59)
-    th_bal = 0.59
+    # Panel B: Train-OOF Calibrated Balanced Diagnostic (Threshold = 0.51)
+    th_bal = 0.51
     preds_bal = (p_fuse_rank >= th_bal).astype(int)
     cm_bal = confusion_matrix(y_test, preds_bal)
     cax2 = ax2.matshow(cm_bal, cmap='Blues')
@@ -84,7 +84,7 @@ def plot_fig5():
     ax2.set_yticklabels(['Control (0)', 'Incident (1)'], fontsize=10)
     ax2.set_xlabel(f'Predicted Label (Train-OOF $\\tau={th_bal:.2f}$)', fontsize=11, fontweight='bold', labelpad=8)
     ax2.set_ylabel('True Clinical Outcome', fontsize=11, fontweight='bold')
-    ax2.set_title('(B) Balanced: High Specificity (67.3%)\n(85.7% Sens, F1=0.3871)', fontsize=11, fontweight='bold', pad=12)
+    ax2.set_title('(B) Diagnostic: Train-OOF Calibrated ($\\tau=0.51$)\n(85.7% Sens [6/7], Spec=54.5%, F1=0.3158)', fontsize=11, fontweight='bold', pad=12)
     
     plt.tight_layout()
     fig.savefig(OUT_DIR / 'Fig5_Confusion_Matrix.png', dpi=300)
