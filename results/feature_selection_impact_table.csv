@@ -1,0 +1,19 @@
+Strategy,Scope,Features (k),Nested CV AUC,Val ROC-AUC,Held-out Test ROC-AUC,Notes
+Train+Val Leaky Pearson (Flawed / Historical),Leaky (Train + Val),10,,0.5844,0.3844,Artificially inflated Val AUC; inverts on Test
+Train+Val Leaky Pearson (Flawed / Historical),Leaky (Train + Val),20,,0.5766,0.4039,Artificially inflated Val AUC; inverts on Test
+Train+Val Leaky Pearson (Flawed / Historical),Leaky (Train + Val),30,,0.4364,0.3403,Artificially inflated Val AUC; inverts on Test
+Train+Val Leaky Pearson (Flawed / Historical),Leaky (Train + Val),40,,0.4649,0.3922,Artificially inflated Val AUC; inverts on Test
+Train-Only Pearson Correlation,Strictly Train (n=180),5,,0.4857,0.3623,Zero leakage; susceptible to baseline symptom inversion
+Train-Only Pearson Correlation,Strictly Train (n=180),10,,0.5325,0.3766,Zero leakage; susceptible to baseline symptom inversion
+Train-Only Pearson Correlation,Strictly Train (n=180),15,,0.4844,0.3403,Zero leakage; susceptible to baseline symptom inversion
+Train-Only Pearson Correlation,Strictly Train (n=180),20,,0.5195,0.3779,Zero leakage; susceptible to baseline symptom inversion
+Train-Only Pearson Correlation,Strictly Train (n=180),30,,0.4909,0.3195,Zero leakage; susceptible to baseline symptom inversion
+Train-Only Pearson Correlation,Strictly Train (n=180),40,,0.4935,0.3506,Zero leakage; susceptible to baseline symptom inversion
+Train-Only ANOVA F-Test,Strictly Train (n=180),10,,0.5325,0.3766,Parametric variance ratio ranking
+Train-Only ANOVA F-Test,Strictly Train (n=180),20,,0.5195,0.3779,Parametric variance ratio ranking
+Train-Only ANOVA F-Test,Strictly Train (n=180),30,,0.4909,0.3195,Parametric variance ratio ranking
+Train-Only Mutual Information,Strictly Train (n=180),10,,0.4922,0.3961,Non-linear information theoretic dependency
+Train-Only Mutual Information,Strictly Train (n=180),20,,0.5584,0.3792,Non-linear information theoretic dependency
+Train-Only Mutual Information,Strictly Train (n=180),30,,0.5818,0.3818,Non-linear information theoretic dependency
+Nested 5-Fold CV Selection (Optimal k=20),Strictly Nested Train (n=180),20,0.637,0.5195,0.3779,Fully automated hyperparameter selection without val/test peeking
+Clinically Guided Transition Vulnerability,"Domain Guided (pSDQ03, SPHERE, Discrepancies)",9,,0.6753,0.5247,Overcomes baseline symptom inversion; positive test orientation

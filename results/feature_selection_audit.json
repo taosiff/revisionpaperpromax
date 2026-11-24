@@ -1,0 +1,164 @@
+[
+  {
+    "Strategy": "Train+Val Leaky Pearson (Flawed / Historical)",
+    "Scope": "Leaky (Train + Val)",
+    "Features (k)": 10,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5844,
+    "Held-out Test ROC-AUC": 0.3844,
+    "Notes": "Artificially inflated Val AUC; inverts on Test"
+  },
+  {
+    "Strategy": "Train+Val Leaky Pearson (Flawed / Historical)",
+    "Scope": "Leaky (Train + Val)",
+    "Features (k)": 20,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5766,
+    "Held-out Test ROC-AUC": 0.4039,
+    "Notes": "Artificially inflated Val AUC; inverts on Test"
+  },
+  {
+    "Strategy": "Train+Val Leaky Pearson (Flawed / Historical)",
+    "Scope": "Leaky (Train + Val)",
+    "Features (k)": 30,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4364,
+    "Held-out Test ROC-AUC": 0.3403,
+    "Notes": "Artificially inflated Val AUC; inverts on Test"
+  },
+  {
+    "Strategy": "Train+Val Leaky Pearson (Flawed / Historical)",
+    "Scope": "Leaky (Train + Val)",
+    "Features (k)": 40,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4649,
+    "Held-out Test ROC-AUC": 0.3922,
+    "Notes": "Artificially inflated Val AUC; inverts on Test"
+  },
+  {
+    "Strategy": "Train-Only Pearson Correlation",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 5,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4857,
+    "Held-out Test ROC-AUC": 0.3623,
+    "Notes": "Zero leakage; susceptible to baseline symptom inversion"
+  },
+  {
+    "Strategy": "Train-Only Pearson Correlation",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 10,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5325,
+    "Held-out Test ROC-AUC": 0.3766,
+    "Notes": "Zero leakage; susceptible to baseline symptom inversion"
+  },
+  {
+    "Strategy": "Train-Only Pearson Correlation",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 15,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4844,
+    "Held-out Test ROC-AUC": 0.3403,
+    "Notes": "Zero leakage; susceptible to baseline symptom inversion"
+  },
+  {
+    "Strategy": "Train-Only Pearson Correlation",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 20,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5195,
+    "Held-out Test ROC-AUC": 0.3779,
+    "Notes": "Zero leakage; susceptible to baseline symptom inversion"
+  },
+  {
+    "Strategy": "Train-Only Pearson Correlation",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 30,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4909,
+    "Held-out Test ROC-AUC": 0.3195,
+    "Notes": "Zero leakage; susceptible to baseline symptom inversion"
+  },
+  {
+    "Strategy": "Train-Only Pearson Correlation",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 40,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4935,
+    "Held-out Test ROC-AUC": 0.3506,
+    "Notes": "Zero leakage; susceptible to baseline symptom inversion"
+  },
+  {
+    "Strategy": "Train-Only ANOVA F-Test",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 10,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5325,
+    "Held-out Test ROC-AUC": 0.3766,
+    "Notes": "Parametric variance ratio ranking"
+  },
+  {
+    "Strategy": "Train-Only ANOVA F-Test",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 20,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5195,
+    "Held-out Test ROC-AUC": 0.3779,
+    "Notes": "Parametric variance ratio ranking"
+  },
+  {
+    "Strategy": "Train-Only ANOVA F-Test",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 30,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4909,
+    "Held-out Test ROC-AUC": 0.3195,
+    "Notes": "Parametric variance ratio ranking"
+  },
+  {
+    "Strategy": "Train-Only Mutual Information",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 10,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.4922,
+    "Held-out Test ROC-AUC": 0.3961,
+    "Notes": "Non-linear information theoretic dependency"
+  },
+  {
+    "Strategy": "Train-Only Mutual Information",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 20,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5584,
+    "Held-out Test ROC-AUC": 0.3792,
+    "Notes": "Non-linear information theoretic dependency"
+  },
+  {
+    "Strategy": "Train-Only Mutual Information",
+    "Scope": "Strictly Train (n=180)",
+    "Features (k)": 30,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.5818,
+    "Held-out Test ROC-AUC": 0.3818,
+    "Notes": "Non-linear information theoretic dependency"
+  },
+  {
+    "Strategy": "Nested 5-Fold CV Selection (Optimal k=20)",
+    "Scope": "Strictly Nested Train (n=180)",
+    "Features (k)": 20,
+    "Nested CV AUC": 0.637,
+    "Val ROC-AUC": 0.5195,
+    "Held-out Test ROC-AUC": 0.3779,
+    "Notes": "Fully automated hyperparameter selection without val/test peeking"
+  },
+  {
+    "Strategy": "Clinically Guided Transition Vulnerability",
+    "Scope": "Domain Guided (pSDQ03, SPHERE, Discrepancies)",
+    "Features (k)": 9,
+    "Nested CV AUC": NaN,
+    "Val ROC-AUC": 0.6753,
+    "Held-out Test ROC-AUC": 0.5247,
+    "Notes": "Overcomes baseline symptom inversion; positive test orientation"
+  }
+]

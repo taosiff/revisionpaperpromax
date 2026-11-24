@@ -1,0 +1,58 @@
+{
+  "module2_rankings": [
+    {
+      "feature": "pSDQ03",
+      "mean_abs_shap": 0.0844
+    },
+    {
+      "feature": "diff_26",
+      "mean_abs_shap": 0.0502
+    },
+    {
+      "feature": "pSCAS_socpho_score",
+      "mean_abs_shap": 0.043
+    },
+    {
+      "feature": "SCAS_socpho_score",
+      "mean_abs_shap": 0.0347
+    },
+    {
+      "feature": "SPHERE07",
+      "mean_abs_shap": 0.0264
+    },
+    {
+      "feature": "SPHERE08",
+      "mean_abs_shap": 0.0239
+    },
+    {
+      "feature": "diff_worry",
+      "mean_abs_shap": 0.0031
+    },
+    {
+      "feature": "SPHERE22",
+      "mean_abs_shap": 0.0021
+    },
+    {
+      "feature": "pSCAS31",
+      "mean_abs_shap": 0.0
+    }
+  ],
+  "module3_rankings": [
+    {
+      "feature": "birth_IRSD_decile",
+      "mean_abs_shap": 0.0647
+    },
+    {
+      "feature": "birth_IER_decile",
+      "mean_abs_shap": 0.051
+    },
+    {
+      "feature": "pPDS01_ses01",
+      "mean_abs_shap": 0.0388
+    },
+    {
+      "feature": "birth_IRSAD_decile",
+      "mean_abs_shap": 0.0384
+    }
+  ]
+}
