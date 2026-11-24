@@ -51,46 +51,55 @@ p_m3 = np.load(PROCESSED_DIR / 'm3_test_probs.npy')
 p_fuse_eq = (p_m1 + p_m2 + p_m3) / 3.0
 p_fuse_rank = np.load(PROCESSED_DIR / 'p_te_rank.npy') if (PROCESSED_DIR / 'p_te_rank.npy').exists() else p_fuse_eq
 
-# Figure 5: Confusion Matrix (Two Clinical Operating Points)
+# Figure 5: Confusion Matrix (Single Publication Matrix - No "Control")
 def plot_fig5():
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.8), dpi=300)
+    fig, ax = plt.subplots(figsize=(6.4, 5.4), dpi=300)
+    fig.patch.set_facecolor('#FFFFFF')
+    ax.set_facecolor('#FFFFFF')
     
-    # Panel A: High-Sensitivity Screening (Threshold = 0.50)
-    preds_scr = (p_fuse_rank >= 0.50).astype(int)
-    cm_scr = confusion_matrix(y_test, preds_scr)
-    cax1 = ax1.matshow(cm_scr, cmap='Blues')
-    fig.colorbar(cax1, ax=ax1, fraction=0.046, pad=0.04)
-    for (i, j), z in np.ndenumerate(cm_scr):
-        ax1.text(j, i, f'{z}', ha='center', va='center', fontsize=13, color='white' if z > 20 else 'black', fontweight='bold')
-    ax1.set_xticks([0, 1])
-    ax1.set_yticks([0, 1])
-    ax1.set_xticklabels(['Control (0)', 'Incident (1)'], fontsize=10)
-    ax1.set_yticklabels(['Control (0)', 'Incident (1)'], fontsize=10)
-    ax1.set_xlabel('Predicted Label (Screening $\\tau=0.50$)', fontsize=11, fontweight='bold', labelpad=8)
-    ax1.set_ylabel('True Clinical Outcome', fontsize=11, fontweight='bold')
-    ax1.set_title('(A) Screening: 100% Sensitivity\n(7/7 Detected, 0 False Negatives)', fontsize=11, fontweight='bold', pad=12)
-    
-    # Panel B: Train-OOF Calibrated Balanced Diagnostic (Threshold = 0.51)
+    # Train-OOF Calibrated Diagnostic Operating Point (tau* = 0.51)
     th_bal = 0.51
-    preds_bal = (p_fuse_rank >= th_bal).astype(int)
-    cm_bal = confusion_matrix(y_test, preds_bal)
-    cax2 = ax2.matshow(cm_bal, cmap='Blues')
-    fig.colorbar(cax2, ax=ax2, fraction=0.046, pad=0.04)
-    for (i, j), z in np.ndenumerate(cm_bal):
-        ax2.text(j, i, f'{z}', ha='center', va='center', fontsize=13, color='white' if z > 20 else 'black', fontweight='bold')
-    ax2.set_xticks([0, 1])
-    ax2.set_yticks([0, 1])
-    ax2.set_xticklabels(['Control (0)', 'Incident (1)'], fontsize=10)
-    ax2.set_yticklabels(['Control (0)', 'Incident (1)'], fontsize=10)
-    ax2.set_xlabel(f'Predicted Label (Train-OOF $\\tau={th_bal:.2f}$)', fontsize=11, fontweight='bold', labelpad=8)
-    ax2.set_ylabel('True Clinical Outcome', fontsize=11, fontweight='bold')
-    ax2.set_title('(B) Diagnostic: Train-OOF Calibrated ($\\tau=0.51$)\n(85.7% Sens [6/7], Spec=54.5%, F1=0.3158)', fontsize=11, fontweight='bold', pad=12)
+    preds = (p_fuse_rank >= th_bal).astype(int)
+    cm = confusion_matrix(y_test, preds)
+    tn, fp, fn, tp = cm.ravel()
+    
+    # Heatmap
+    cax = ax.matshow(cm, cmap='Blues', alpha=0.85)
+    cbar = fig.colorbar(cax, ax=ax, fraction=0.046, pad=0.04)
+    cbar.ax.tick_params(labelsize=9)
+    
+    # Cell text annotations with count and percentage
+    labels_text = [
+        [f"True Non-Trans (TN)\n{tn}\n({tn/55*100:.1f}%)", f"False Alert (FP)\n{fp}\n({fp/55*100:.1f}%)"],
+        [f"Missed Case (FN)\n{fn}\n({fn/7*100:.1f}%)", f"Detected Case (TP)\n{tp}\n({tp/7*100:.1f}%)"]
+    ]
+    for (i, j), txt in np.ndenumerate(labels_text):
+        z = cm[i, j]
+        ax.text(j, i, txt, ha='center', va='center',
+                fontsize=11.0, fontweight='bold',
+                color='white' if z > 15 else '#0F172A')
+        
+    ax.set_xticks([0, 1])
+    ax.set_yticks([0, 1])
+    ax.set_xticklabels(['Non-Transitioned (0)', 'Incident Case (1)'], fontsize=10.5, fontweight='bold')
+    ax.set_yticklabels(['Non-Transitioned (0)', 'Incident Case (1)'], fontsize=10.5, fontweight='bold')
+    ax.set_xlabel(r'Predicted Clinical Status ($\tau^* = 0.51$)', fontsize=11.5, fontweight='bold', labelpad=10)
+    ax.set_ylabel('True Clinical Outcome (2-Year Follow-up)', fontsize=11.5, fontweight='bold', labelpad=10)
+    
+    ax.set_title('Held-Out Test Cohort Confusion Matrix ($n=62$)\n' +
+                 r'$\mathrm{Multimodal\ Rank\ Averaging\ (\tau^* = 0.51)} \mid \mathrm{Sensitivity} = 85.71\%\ (6/7)$',
+                 fontsize=11.0, fontweight='bold', pad=14)
+    
+    plt.figtext(0.5, -0.04,
+                r"$\mathrm{Diagnostic:}\ \mathrm{Sens} = 85.7\%\ (6/7) \mid \mathrm{Spec} = 54.5\%\ (30/55) \mid \mathrm{NPV} = 96.8\% \mid F_1 = 0.3158$" + "\n" +
+                r"$\mathrm{Screening}\ (\tau=0.50):\ \mathrm{Sensitivity} = 100.0\%\ (7/7\ \mathrm{cases\ detected,\ 0\ FN}) \mid \mathrm{NPV} = 100.0\%$",
+                ha='center', fontsize=8.6, color='#334155', style='italic')
     
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig5_Confusion_Matrix.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig5_Confusion_Matrix.tif', dpi=300)
+    fig.savefig(OUT_DIR / 'Fig5_Confusion_Matrix.png', dpi=300, bbox_inches='tight')
+    fig.savefig(OUT_DIR / 'Fig5_Confusion_Matrix.tif', dpi=300, bbox_inches='tight')
     plt.close(fig)
-    print("  [OK] Fig 5 generated (Two Operating Points).")
+    print("  [OK] Fig 5 generated (Single Publication Matrix, zero 'Control' label).")
 
 # Figure 6: Ablation Study
 def plot_fig6():
