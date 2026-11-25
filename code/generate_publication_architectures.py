@@ -554,8 +554,8 @@ def build_fig3():
     ax.add_patch(p2_box)
     ax.add_patch(patches.Rectangle((4.30, 3.85), 0.12, 1.85, facecolor='#0284C7', edgecolor='none', zorder=12))
     ax.text(4.55, 5.45, "B. Social Evaluative Fear", ha='left', va='center', color='#0369A1', fontsize=8.2, fontweight='bold', zorder=20)
-    ax.text(4.55, 4.65, r"$\bullet$ pSCAS_socpho: Parent-reported social fear" + "\n" +
-                        r"$\bullet$ SCAS_socpho: Child-reported social fear" + "\n" +
+    ax.text(4.55, 4.65, r"$\bullet$ pSCAS_socpho_score: Parent social fear" + "\n" +
+                        r"$\bullet$ SCAS_socpho_score: Child social fear" + "\n" +
                         r"$\bullet$ pSCAS31: Fear of negative evaluation",
             ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
 
@@ -565,8 +565,8 @@ def build_fig3():
     ax.add_patch(p3_box)
     ax.add_patch(patches.Rectangle((4.30, 1.85), 0.12, 1.75, facecolor='#D97706', edgecolor='none', zorder=12))
     ax.text(4.55, 3.35, "C. Cross-Informant Discrepancy", ha='left', va='center', color='#B45309', fontsize=8.2, fontweight='bold', zorder=20)
-    ax.text(4.55, 2.55, r"$\bullet\ \Delta_{26} = \mathrm{pSCAS26} - \mathrm{SCAS26}$ (Somatic gap)" + "\n" +
-                        r"$\bullet\ \Delta_{\mathrm{worry}} = \mathrm{pSCAS31} - \mathrm{SCAS31}$ (Worry gap)" + "\n" +
+    ax.text(4.55, 2.55, r"$\bullet\ \mathrm{diff\_26} = \mathrm{pSCAS26} - \mathrm{SCAS26}$ (Somatic gap)" + "\n" +
+                        r"$\bullet\ \mathrm{diff\_worry} = \mathrm{pSCAS31} - \mathrm{SCAS31}$ (Worry gap)" + "\n" +
                         r"Captures masked subjective distress in youth",
             ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
 
@@ -593,17 +593,17 @@ def build_fig3():
     # Draw 3D axis arrows
     ax.annotate('', xy=(orig_x + 1.25, orig_y - 0.45), xytext=(orig_x, orig_y),
                 arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#0284C7'), zorder=20)
-    ax.text(orig_x + 1.30, orig_y - 0.55, r"$\mathbf{z}_1\ (\lambda_1 = 3.12)$", ha='left', va='center',
+    ax.text(orig_x + 1.30, orig_y - 0.55, r"$\mathbf{z}_1\ (\lambda_1 = 3.12,\ 34.5\%)$", ha='left', va='center',
             color='#0284C7', fontsize=7.8, fontweight='bold', zorder=25)
 
     ax.annotate('', xy=(orig_x, orig_y + 1.45), xytext=(orig_x, orig_y),
                 arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#10B981'), zorder=20)
-    ax.text(orig_x, orig_y + 1.60, r"$\mathbf{z}_2\ (\lambda_2 = 1.54)$", ha='center', va='bottom',
+    ax.text(orig_x, orig_y + 1.60, r"$\mathbf{z}_2\ (\lambda_2 = 1.54,\ 17.0\%)$", ha='center', va='bottom',
             color='#047857', fontsize=7.8, fontweight='bold', zorder=25)
 
     ax.annotate('', xy=(orig_x - 1.20, orig_y - 0.40), xytext=(orig_x, orig_y),
                 arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#8B5CF6'), zorder=20)
-    ax.text(orig_x - 1.25, orig_y - 0.50, r"$\mathbf{z}_3\ (\lambda_3 = 1.07)$", ha='right', va='center',
+    ax.text(orig_x - 1.25, orig_y - 0.50, r"$\mathbf{z}_3\ (\lambda_3 = 1.07,\ 11.8\%)$", ha='right', va='center',
             color='#6D28D9', fontsize=7.8, fontweight='bold', zorder=25)
 
     # Draw 3D projected variance ellipsoids
@@ -711,10 +711,10 @@ def build_fig3():
     curve_y = sig_ax_y0 + sig_vals * sig_h
     ax.plot(curve_x, curve_y, color='#16A34A', lw=2.2, zorder=18)
 
-    # Decision threshold tau* line
-    tau_y = sig_ax_y0 + 0.56 * sig_h
+    # Decision threshold tau = 0.50 line (Natural logistic operating point)
+    tau_y = sig_ax_y0 + 0.50 * sig_h
     ax.plot([sig_ax_x0, sig_ax_x0 + sig_w], [tau_y, tau_y], color='#D97706', lw=1.2, linestyle='--', zorder=19)
-    ax.text(sig_ax_x0 + sig_w - 0.05, tau_y + 0.10, r"$\tau^*=0.56$", ha='right', va='bottom', color='#D97706', fontsize=7.0, fontweight='bold', zorder=22)
+    ax.text(sig_ax_x0 + sig_w - 0.05, tau_y + 0.10, r"$\tau = 0.50$ (Screening Cutoff)", ha='right', va='bottom', color='#D97706', fontsize=6.8, fontweight='bold', zorder=22)
 
     # Points along curve
     ax.plot([sig_ax_x0 + 0.45, sig_ax_x0 + 0.75], [sig_ax_y0 + 0.22, sig_ax_y0 + 0.38], 'o', color='#3B82F6', markersize=5, zorder=20)
@@ -732,7 +732,7 @@ def build_fig3():
                    r"$\mathrm{Test\ ROC\text{-}AUC} = 0.6260$" + "\n" +
                    r"$\mathrm{Sensitivity} = 71.4\%\ (5/7)$" + "\n" +
                    r"$\mathrm{Specificity} = 67.3\%\ (37/55)$" + "\n" +
-                   r"$\mathrm{NPV} = 94.9\%$" + "\n" +
+                   r"$\mathrm{NPV} = 94.9\% \mid \tau = 0.50$" + "\n" +
                    r"$\mathrm{Brier\ Score} = 0.2460$",
               face_col='#F5F3FF', edge_col='#7C3AED', text_col='#4C1D95', font_size=7.4, font_weight='bold')
 
