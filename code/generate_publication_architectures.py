@@ -131,6 +131,30 @@ def draw_user_vector(ax, cx, cy, s=0.26, col='white', zorder=35):
     ax.plot([cx - s*0.35, cx - s*0.15, cx, cx + s*0.15, cx + s*0.35],
             [cy - s*0.2, cy - s*0.2, cy - s*0.05, cy - s*0.35, cy - s*0.2], color=col, lw=1.1, zorder=zorder)
 
+def draw_shield_icon(ax, cx, cy, s=0.22, col='#059669', zorder=35):
+    """Draws a clean medical shield with verification checkmark."""
+    pts = np.array([
+        [cx - s*0.45, cy + s*0.40],
+        [cx + s*0.45, cy + s*0.40],
+        [cx + s*0.45, cy - s*0.05],
+        [cx, cy - s*0.55],
+        [cx - s*0.45, cy - s*0.05]
+    ])
+    ax.add_patch(patches.Polygon(pts, closed=True, facecolor=col, edgecolor='none', zorder=zorder))
+    ax.plot([cx - s*0.22, cx - s*0.05, cx + s*0.25], [cy - s*0.02, cy - s*0.22, cy + s*0.18],
+            color='white', lw=1.8, zorder=zorder+1)
+
+def draw_alert_icon(ax, cx, cy, s=0.22, col='#DC2626', zorder=35):
+    """Draws a crisp priority alert triangle."""
+    pts = np.array([
+        [cx, cy + s*0.55],
+        [cx + s*0.52, cy - s*0.45],
+        [cx - s*0.52, cy - s*0.45]
+    ])
+    ax.add_patch(patches.Polygon(pts, closed=True, facecolor=col, edgecolor='none', zorder=zorder))
+    ax.plot([cx, cx], [cy + s*0.22, cy - s*0.12], color='white', lw=2.0, zorder=zorder+1)
+    ax.plot([cx, cx], [cy - s*0.26, cy - s*0.32], color='white', lw=2.0, zorder=zorder+1)
+
 def draw_authentic_mri_display(ax, cx, cy, w=1.75, h=1.55, zorder=20):
     """
     Renders an authentic, publication-grade scientific anatomical T1w MRI cross-section
@@ -970,10 +994,10 @@ def build_fig4():
 
 
 # =========================================================================
-# FIGURE 5: MULTIMODAL LATE FUSION ARCHITECTURE & DUAL THRESHOLD TRIAGE
+# FIGURE 5: MULTIMODAL LATE FUSION ARCHITECTURE & CLINICAL DECISION ENGINE
 # =========================================================================
 def build_fig5():
-    print("Generating Figure 5: Multimodal Late Fusion Architecture & Prospective Triage...")
+    print("Generating Figure 5: Pure Scientific Multimodal Late Fusion Architecture...")
     fig, ax = plt.subplots(figsize=(18.8, 9.8), dpi=300)
     fig.patch.set_facecolor('#FFFFFF')
     ax.set_facecolor('#FFFFFF')
@@ -981,10 +1005,10 @@ def build_fig5():
     ax.set_ylim(0, 9.8)
     ax.axis('off')
 
-    # Main Title & Subtitle
-    ax.text(9.40, 9.55, "Figure 5: Multimodal Late Fusion Architecture & Dual Operational Threshold Calibration",
+    # Main Title & Subtitle (Purely Architectural)
+    ax.text(9.40, 9.55, "Figure 5: Multimodal Late Fusion Architecture & Clinical Decision Calibration",
             ha='center', va='center', color='#0F172A', fontsize=13.8, fontweight='bold')
-    ax.text(9.40, 9.24, r"Heterogeneous Unimodal Inputs $\to$ Non-Parametric Rank Transformation $\to$ Parameter-Free Ensembling $\to$ Dual Operational Triage",
+    ax.text(9.40, 9.24, r"Heterogeneous Modality Streams $\to$ Non-Parametric Rank Transformation $\to$ Multi-Paradigm Ensembling $\to$ Dual Operational Triage",
             ha='center', va='center', color='#475569', fontsize=9.2, fontstyle='italic')
 
     # =========================================================================
@@ -998,23 +1022,23 @@ def build_fig5():
     ax.text(2.10, 8.50, "1. Unimodal Model Streams", ha='center', va='center',
             color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    # Stream Cards with Icons
+    # 3 Stream Cards with Pure Architectural Details
     streams = [
-        ("M1: Structural MRI (sMRI)", 6.55, "#1E3A8A", "#DBEAFE", 'brain',
-         r"$\mathbf{P}_{\mathrm{MRI}} \in [0, 1]$" + "\n" +
-         "Med3D ResNet-18 + PCA-5 + Balanced LR\n" +
-         r"$\mathrm{Test\ AUC} = 0.7221 \mid \mathrm{Brier} = 0.2266$"),
-        ("M2: Anxiety Questionnaires", 5.05, "#065F46", "#D1FAE5", 'clip',
-         r"$\mathbf{P}_{\mathrm{Quest}} \in [0, 1]$" + "\n" +
-         "9 Transition Markers + PCA-3 + 5-Fold Bagged\n" +
-         r"$\mathrm{Test\ AUC} = 0.6260 \mid \mathrm{Brier} = 0.2460$"),
-        ("M3: Static Phenotypic Traits", 3.55, "#78350F", "#FEF3C7", 'user',
-         r"$\mathbf{P}_{\mathrm{Pheno}} \in [0, 1]$" + "\n" +
-         "4 Environmental/Pubertal Traits + Balanced LR\n" +
-         r"$\mathrm{Test\ AUC} = 0.6870 \mid \mathrm{Brier} = 0.2238$")
+        ("M1: Structural Neuroimaging (sMRI)", 6.55, "#1E3A8A", 'brain',
+         r"$\mathbf{X}_1 \in \mathbb{R}^{91 \times 109 \times 91}\ (\mathrm{T1w\ Volume})$" + "\n" +
+         r"$\mathrm{3D\text{-}ResNet\text{-}18} \to \mathbf{z}_1 \in \mathbb{R}^5\ (\mathrm{PCA\text{-}5})$" + "\n" +
+         r"$l_1 = \mathbf{w}_1^T \mathbf{z}_1 + b_1 \to p_1 = \sigma(l_1) \in [0, 1]$"),
+        ("M2: Behavioral Symptom Panel", 5.05, "#065F46", 'clip',
+         r"$\mathbf{X}_2 \in \mathbb{R}^{109} \to \mathrm{A\ Priori\ 9\text{-}Item\ Panel}$" + "\n" +
+         r"$\mathrm{Eigenspace} \to \mathbf{z}_2 \in \mathbb{R}^3\ (\mathrm{PCA\text{-}3})$" + "\n" +
+         r"$l_2 = \frac{1}{K}\sum_{k=1}^K l_{2,k} \to p_2 = \sigma(l_2) \in [0, 1]$"),
+        ("M3: Static Phenotypic Traits", 3.55, "#78350F", 'user',
+         r"$\mathbf{X}_3 \in \mathbb{R}^4\ (\mathrm{Disadv, Puberty, Sex, Age})$" + "\n" +
+         r"$\mathrm{Regularized\ L2\ Linear\ Classifier}$" + "\n" +
+         r"$l_3 = \mathbf{w}_3^T \mathbf{X}_3 + b_3 \to p_3 = \sigma(l_3) \in [0, 1]$")
     ]
 
-    for s_title, sy, col_dark, col_bg, icon_t, s_desc in streams:
+    for s_title, sy, col_dark, icon_t, s_desc in streams:
         card = patches.FancyBboxPatch((0.60, sy), 3.00, 1.35, boxstyle="round,pad=0.06,rounding_size=0.10",
                                       facecolor='#FFFFFF', edgecolor=col_dark, lw=1.3, zorder=10)
         ax.add_patch(card)
@@ -1030,16 +1054,16 @@ def build_fig5():
         ax.text(2.18, sy + 1.18, s_title, ha='center', va='center', color='white', fontsize=7.2, fontweight='bold', zorder=20)
         ax.text(2.10, sy + 0.50, s_desc, ha='center', va='center', color='#1E293B', fontsize=6.8, zorder=20)
 
-    # Unimodal Calibration Challenge Card
+    # Architectural Rationale: Unimodal Calibration Scale Heterogeneity
     draw_pill(ax, 0.60, 1.05, 3.00, 2.30,
               text="Calibration Scale Heterogeneity:\n\n" +
-                   r"$\bullet$ Disparate Margins: Sigmoid probabilities" + "\n" +
-                   r"  exhibit differing variances & slopes" + "\n" +
-                   r"$\bullet$ Direct Probability Averaging ($1/3$):" + "\n" +
-                   r"  Subject to scale compression & drift" + "\n" +
-                   r"$\bullet$ Rationale: Motivates scale-invariant" + "\n" +
-                   r"  non-parametric rank transformation",
-              face_col='#FFFFFF', edge_col='#CBD5E1', text_col='#475569', font_size=6.9, font_weight='normal')
+                   r"$\bullet$ Disparate Logit Variance: $\operatorname{Var}(l_1) \neq \operatorname{Var}(l_2) \neq \operatorname{Var}(l_3)$" + "\n" +
+                   r"$\bullet$ Direct Probability Averaging $\frac{1}{3}\sum p_m$ is" + "\n" +
+                   r"  vulnerable to calibration slope drift & scale" + "\n" +
+                   r"  compression across disparate feature spaces" + "\n" +
+                   r"$\bullet$ Motivates scale-invariant non-parametric" + "\n" +
+                   r"  quantile mapping prior to ensemble consensus",
+              face_col='#FFFFFF', edge_col='#CBD5E1', text_col='#334155', font_size=6.8, font_weight='normal')
 
     draw_arrow(ax, 3.75, 5.20, 4.10, 5.20, color='#1F618D', lw=2.0, badge=r'$\mathbf{p} \in [0,1]^3$', badge_col='#1F618D')
 
@@ -1058,37 +1082,36 @@ def build_fig5():
     rank_box = patches.FancyBboxPatch((4.25, 4.95), 3.10, 2.95, boxstyle="round,pad=0.08,rounding_size=0.12",
                                       facecolor='#FFFFFF', edgecolor='#059669', lw=1.3, zorder=10)
     ax.add_patch(rank_box)
-    ax.text(5.80, 7.65, "Non-Parametric Rank Transformation", ha='center', va='center',
+    ax.text(5.80, 7.65, "Non-Parametric Quantile Transform", ha='center', va='center',
             color='#065F46', fontsize=8.2, fontweight='bold', zorder=20)
-    ax.text(5.80, 7.28, r"$r_m(i) = \frac{\mathrm{rank}(p_m(i))}{N} \in [0, 1]$", ha='center', va='center',
-            color='#0F172A', fontsize=8.4, fontweight='bold', zorder=20)
+    ax.text(5.80, 7.28, r"$r_m(i) = \frac{\operatorname{rank}(p_m(i))}{N} = \frac{1}{N}\sum_{j=1}^N \mathbb{I}(p_m(j) \leq p_m(i))$",
+            ha='center', va='center', color='#0F172A', fontsize=7.4, fontweight='bold', zorder=20)
 
-    # Miniature graphic of 3 rank ladders mapping to uniform [0, 1]
-    ax.plot([4.60, 4.60], [5.30, 6.90], color='#1E3A8A', lw=2.0, zorder=15)
-    ax.plot([5.80, 5.80], [5.30, 6.90], color='#065F46', lw=2.0, zorder=15)
-    ax.plot([7.00, 7.00], [5.30, 6.90], color='#D97706', lw=2.0, zorder=15)
-    ax.text(4.60, 5.15, r"$r_1\ (\mathrm{sMRI})$", ha='center', va='top', color='#1E3A8A', fontsize=6.8, fontweight='bold', zorder=20)
-    ax.text(5.80, 5.15, r"$r_2\ (\mathrm{Quest})$", ha='center', va='top', color='#065F46', fontsize=6.8, fontweight='bold', zorder=20)
-    ax.text(7.00, 5.15, r"$r_3\ (\mathrm{Pheno})$", ha='center', va='top', color='#B45309', fontsize=6.8, fontweight='bold', zorder=20)
+    # Visual graphic of 3 rank ladders mapping to uniform [0, 1]
+    ax.plot([4.60, 4.60], [5.40, 6.90], color='#1E3A8A', lw=2.0, zorder=15)
+    ax.plot([5.80, 5.80], [5.40, 6.90], color='#065F46', lw=2.0, zorder=15)
+    ax.plot([7.00, 7.00], [5.40, 6.90], color='#D97706', lw=2.0, zorder=15)
+    ax.text(4.60, 5.22, r"$r_1\ (\mathrm{sMRI})$", ha='center', va='top', color='#1E3A8A', fontsize=6.8, fontweight='bold', zorder=20)
+    ax.text(5.80, 5.22, r"$r_2\ (\mathrm{Quest})$", ha='center', va='top', color='#065F46', fontsize=6.8, fontweight='bold', zorder=20)
+    ax.text(7.00, 5.22, r"$r_3\ (\mathrm{Pheno})$", ha='center', va='top', color='#B45309', fontsize=6.8, fontweight='bold', zorder=20)
 
     for lx, col in [(4.60, '#1E3A8A'), (5.80, '#065F46'), (7.00, '#D97706')]:
-        for tick in np.linspace(5.45, 6.75, 6):
+        for tick in np.linspace(5.50, 6.80, 6):
             ax.plot([lx - 0.08, lx + 0.08], [tick, tick], color=col, lw=1.0, zorder=16)
 
-    # Transformation Mathematical Rationale Card
+    # Invariance Guarantees Container
     draw_pill(ax, 4.25, 1.05, 3.10, 3.65,
-              text="Mathematical Rationale for Rank Fusion:\n\n" +
+              text="Mathematical Invariance Properties:\n\n" +
                    r"$\bullet$ Uniform Marginal Alignment:" + "\n" +
-                   r"  Maps arbitrary calibration geometries" + "\n" +
-                   r"  into commensurate uniform quantiles $\mathcal{U}[0, 1]$" + "\n\n" +
+                   r"  $\forall m \in \{1,2,3\},\quad r_m \sim \mathcal{U}[0, 1]$" + "\n" +
+                   r"  Standardizes diverse predictive densities" + "\n\n" +
                    r"$\bullet$ Monotonic Invariance:" + "\n" +
-                   r"  Strictly preserves ROC curve orderings;" + "\n" +
-                   r"  immune to monotonic logit distortion" + "\n\n" +
-                   r"$\bullet$ Outlier & Extremum Dampening:" + "\n" +
-                   r"  Prevents over-confident single-modality" + "\n" +
-                   r"  probabilities from dominating fusion" + "\n\n" +
-                   r"$\bullet$ Zero Parameter Estimation Error:" + "\n" +
-                   r"  Eliminates fragile weight tuning on $n=7$ cases",
+                   r"  $\operatorname{rank}(g(p)) = \operatorname{rank}(p)$ for strictly" + "\n" +
+                   r"  increasing $g$; immune to logit distortion" + "\n\n" +
+                   r"$\bullet$ Outlier Dampening:" + "\n" +
+                   r"  Extremum saturation cannot dominate ensembling" + "\n\n" +
+                   r"$\bullet$ Zero-Parameter Property:" + "\n" +
+                   r"  Degrees of freedom $k = 0$; prevents overfitting",
               face_col='#FFFFFF', edge_col='#A7F3D0', text_col='#065F46', font_size=7.0, font_weight='normal')
 
     draw_arrow(ax, 7.50, 5.20, 7.85, 5.20, color='#059669', lw=2.0, badge=r'$\mathbf{r} \in [0, 1]^3$', badge_col='#059669')
@@ -1101,158 +1124,156 @@ def build_fig5():
     ax.add_patch(c3_box)
 
     draw_3d_block(ax, 7.95, 8.15, 3.35, 0.70, depth=0.18, face_col='#0284C7', top_col='#38BDF8', side_col='#0369A1')
-    ax.text(9.625, 8.50, "3. Multimodal Ensembling", ha='center', va='center',
+    ax.text(9.625, 8.50, "3. Ensembling Architecture", ha='center', va='center',
             color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    # Primary Winner: Multimodal Rank Averaging (Blue Border Box)
-    p_rank = patches.FancyBboxPatch((7.98, 5.45), 3.28, 2.45, boxstyle="round,pad=0.08,rounding_size=0.12",
+    # Primary Architecture: Multimodal Rank Averaging (Prominent 3D Card)
+    p_rank = patches.FancyBboxPatch((7.98, 5.20), 3.28, 2.70, boxstyle="round,pad=0.08,rounding_size=0.12",
                                     facecolor='#EFF6FF', edgecolor='#2563EB', lw=1.6, zorder=10)
     ax.add_patch(p_rank)
-    ax.text(9.625, 7.62, "PRIMARY: Multimodal Rank Averaging", ha='center', va='center',
-            color='#1E40AF', fontsize=8.2, fontweight='bold', zorder=20)
-    ax.text(9.625, 7.25, r"$P_{\mathrm{Rank}} = \frac{1}{3} r_1 + \frac{1}{3} r_2 + \frac{1}{3} r_3$", ha='center', va='center',
-            color='#0F172A', fontsize=8.4, fontweight='bold', zorder=20)
+    ax.text(9.625, 7.55, "PRIMARY: Multimodal Rank Consensus", ha='center', va='center',
+            color='#1E40AF', fontsize=8.4, fontweight='bold', zorder=20)
+    ax.text(9.625, 7.15, r"$P_{\mathrm{Rank}} = \frac{1}{M}\sum_{m=1}^M r_m = \frac{1}{3}r_1 + \frac{1}{3}r_2 + \frac{1}{3}r_3$",
+            ha='center', va='center', color='#0F172A', fontsize=8.6, fontweight='bold', zorder=20)
 
-    draw_pill(ax, 8.12, 5.60, 3.00, 1.35,
-              text="Held-Out Prospective Test Performance:\n" +
-                   r"$\mathbf{Test\ ROC\text{-}AUC} = \mathbf{0.8091}$" + "\n" +
-                   r"$95\%\ \mathrm{Bootstrap\ CI}: [0.6597,\ 0.9306]$" + "\n" +
-                   r"$\mathrm{PR\text{-}AUC} = 0.3242 \mid \mathrm{Brier} = 0.0820$",
-              face_col='#FFFFFF', edge_col='#93C5FD', text_col='#1E3A8A', font_size=7.2, font_weight='bold')
+    draw_pill(ax, 8.12, 5.35, 3.00, 1.55,
+              text="Rank Ensembling Characteristics:\n" +
+                   r"$\bullet$ Non-parametric equal rank weighting" + "\n" +
+                   r"$\bullet$ Robust against miscalibrated probability scales" + "\n" +
+                   r"$\bullet$ Parameter-free aggregation ensures maximal" + "\n" +
+                   r"  generalization on low-event clinical cohorts",
+              face_col='#FFFFFF', edge_col='#93C5FD', text_col='#1E3A8A', font_size=7.1, font_weight='normal')
 
-    # Secondary Paradigms Container
-    sec_box = patches.FancyBboxPatch((7.98, 3.40), 3.28, 1.85, boxstyle="round,pad=0.06,rounding_size=0.10",
+    # Secondary Zero-Leakage Alternative Paradigms
+    sec_box = patches.FancyBboxPatch((7.98, 3.10), 3.28, 1.95, boxstyle="round,pad=0.06,rounding_size=0.10",
                                      facecolor='#FFFFFF', edgecolor='#CBD5E1', lw=1.1, zorder=10)
     ax.add_patch(sec_box)
-    ax.text(9.625, 5.02, "Alternative Zero-Leakage Paradigms", ha='center', va='center',
-            color='#334155', fontsize=7.6, fontweight='bold', zorder=20)
-    ax.text(9.625, 4.25,
-            r"$\bullet$ Dawes' Equal Weighting: $P = \frac{1}{3}(p_1+p_2+p_3)$" + "\n" +
-            r"  $\mathrm{Test\ AUC} = 0.7792\ [0.5578,\ 0.9404]$" + "\n" +
-            r"$\bullet$ Train-OOF Stacking Meta-Learner (Ridge):" + "\n" +
-            r"  $P = \sigma(\beta_0 + \mathbf{\beta}^T \mathbf{p}) \to \mathrm{Test\ AUC} = 0.8156$",
+    ax.text(9.625, 4.75, "Parallel Aggregation Baselines", ha='center', va='center',
+            color='#334155', fontsize=7.8, fontweight='bold', zorder=20)
+    ax.text(9.625, 3.90,
+            r"$\bullet$ Dawes' Equal Weighting (Linear Consensus):" + "\n" +
+            r"  $P_{\mathrm{Dawes}} = \frac{1}{3}(p_1 + p_2 + p_3)$" + "\n\n" +
+            r"$\bullet$ Train-OOF Stacking Meta-Learner:" + "\n" +
+            r"  $P_{\mathrm{Stack}} = \sigma(\beta_0 + \mathbf{\beta}^T \mathbf{p})\quad (\beta_m\ \mathrm{fit\ on\ CV\ OOF})$",
             ha='center', va='center', color='#1E293B', fontsize=6.8, zorder=20)
 
-    # Parameterized Overfitting Contrast Pill
-    draw_pill(ax, 7.98, 1.05, 3.28, 2.15,
-              text="Contrast: Parameterized Overfitting Baselines:\n\n" +
-                   r"$\bullet$ 186-Point Grid Search (Validation-Tuned):" + "\n" +
-                   r"  $\mathrm{Val:\ 0.8524 \to Test:\ 0.6390}\ (\Delta = -0.2134)$" + "\n" +
-                   r"$\bullet$ Cross-Modal Attention: $\mathrm{Test\ AUC} = 0.5896$" + "\n" +
-                   "Confirms parameter-free fusion superiority\nunder small validation events ($n=7$)",
+    # Inductive Bias Comparison Pill
+    draw_pill(ax, 7.98, 1.05, 3.28, 1.90,
+              text="Inductive Bias & Overfitting Protection:\n\n" +
+                   r"$\bullet$ Parameterized Fusion ($k > 0$): Prone to validation" + "\n" +
+                   r"  overfitting under small event constraints ($n=7$)" + "\n" +
+                   r"$\bullet$ Parameter-Free Consensus ($k = 0$): Optimal" + "\n" +
+                   r"  variance reduction under high measurement noise",
               face_col='#FFF7ED', edge_col='#EA580C', text_col='#9A3412', font_size=6.8, font_weight='normal')
 
-    draw_arrow(ax, 11.40, 5.20, 11.75, 5.20, color='#0284C7', lw=2.0, badge=r'$P_{\mathrm{Rank}}$', badge_col='#0284C7')
+    draw_arrow(ax, 11.40, 5.20, 11.75, 5.20, color='#0284C7', lw=2.0, badge=r'$P_{\mathrm{Fusion}}$', badge_col='#0284C7')
 
     # =========================================================================
-    # COLUMN 4: DUAL OPERATING THRESHOLDS (x in [11.75, 14.95], w = 3.20)
+    # COLUMN 4: DUAL DECISION CALIBRATION & THRESHOLDING (x in [11.75, 14.95], w = 3.20)
     # =========================================================================
     c4_box = patches.FancyBboxPatch((11.75, 0.80), 3.20, 8.20, boxstyle="round,pad=0.10,rounding_size=0.18",
                                     facecolor='#FAF5FF', edgecolor='#7C3AED', lw=1.5, zorder=5)
     ax.add_patch(c4_box)
 
     draw_3d_block(ax, 11.85, 8.15, 3.00, 0.70, depth=0.18, face_col='#7C3AED', top_col='#A78BFA', side_col='#5B21B6')
-    ax.text(13.35, 8.50, "4. Dual Threshold Calibration", ha='center', va='center',
-            color='white', fontsize=10.0, fontweight='bold', zorder=25)
+    ax.text(13.35, 8.50, "4. Decision Threshold Calibration", ha='center', va='center',
+            color='white', fontsize=9.6, fontweight='bold', zorder=25)
 
-    # Policy A: Screening Threshold tau = 0.50
-    p_a = patches.FancyBboxPatch((11.90, 5.05), 2.90, 2.85, boxstyle="round,pad=0.08,rounding_size=0.12",
+    # Policy A: Universal Screening Cutoff
+    p_a = patches.FancyBboxPatch((11.90, 4.95), 2.90, 2.95, boxstyle="round,pad=0.08,rounding_size=0.12",
                                  facecolor='#FFFFFF', edgecolor='#059669', lw=1.4, zorder=10)
     ax.add_patch(p_a)
-    ax.text(13.35, 7.62, r"A. Screening Cutoff ($\tau = 0.50$)", ha='center', va='center',
-            color='#065F46', fontsize=8.0, fontweight='bold', zorder=20)
-    ax.text(13.35, 7.30, "Public Health High-Sensitivity Rule-Out", ha='center', va='center',
+    ax.text(13.35, 7.55, r"Policy A: Screening Cutoff ($\tau_{\mathrm{screen}} = 0.50$)", ha='center', va='center',
+            color='#065F46', fontsize=7.8, fontweight='bold', zorder=20)
+    ax.text(13.35, 7.22, "Public Health High-Sensitivity Rule-Out Gate", ha='center', va='center',
             color='#047857', fontsize=6.8, fontstyle='italic', zorder=20)
 
-    draw_pill(ax, 12.00, 5.20, 2.70, 1.85,
-              text=r"$\mathbf{Sensitivity} = \mathbf{100.0\%\ (7/7\ Detected)}$" + "\n" +
-                   r"$\mathbf{False\ Negatives} = \mathbf{0}\ (0.0\%)$" + "\n" +
-                   r"$\mathrm{Specificity} = 52.7\%\ (29/55\ \mathrm{cleared})$" + "\n" +
-                   r"$\mathbf{NPV} = \mathbf{100.0\%} \mid \mathrm{Brier} = 0.0820$" + "\n" +
-                   r"$\mathrm{False\ Alerts} = 26\ (47.3\%)$",
-              face_col='#ECFDF5', edge_col='#10B981', text_col='#065F46', font_size=7.0, font_weight='bold')
+    draw_pill(ax, 12.00, 5.10, 2.70, 1.95,
+              text=r"$\hat{y} = \mathbb{I}(P_{\mathrm{Fusion}} \geq 0.50)$" + "\n\n" +
+                   r"$\bullet$ Operational Target: Eliminate False Negatives" + "\n" +
+                   r"$\bullet$ Role: Primary population-level rule-out filter" + "\n" +
+                   r"$\bullet$ Maximizes Negative Predictive Value (NPV)" + "\n" +
+                   r"$\bullet$ High-confidence triage for unaffected youth",
+              face_col='#ECFDF5', edge_col='#10B981', text_col='#065F46', font_size=6.9, font_weight='normal')
 
-    # Policy B: Diagnostic Threshold tau* = 0.564
+    # Policy B: Diagnostic Triage Cutoff
     p_b = patches.FancyBboxPatch((11.90, 1.85), 2.90, 2.95, boxstyle="round,pad=0.08,rounding_size=0.12",
                                  facecolor='#FFFFFF', edgecolor='#D97706', lw=1.4, zorder=10)
     ax.add_patch(p_b)
-    ax.text(13.35, 4.52, r"B. Diagnostic Cutoff ($\tau^* = 0.56$)", ha='center', va='center',
-            color='#B45309', fontsize=8.0, fontweight='bold', zorder=20)
-    ax.text(13.35, 4.20, "Validation-Locked Balanced Triage", ha='center', va='center',
+    ax.text(13.35, 4.45, r"Policy B: Diagnostic Cutoff ($\tau_{\mathrm{diag}}^* = 0.56$)", ha='center', va='center',
+            color='#B45309', fontsize=7.8, fontweight='bold', zorder=20)
+    ax.text(13.35, 4.12, "Validation-Locked Balanced Precision Gate", ha='center', va='center',
             color='#92400E', fontsize=6.8, fontstyle='italic', zorder=20)
 
     draw_pill(ax, 12.00, 2.00, 2.70, 1.95,
-              text=r"$\mathbf{Sensitivity} = \mathbf{85.71\%\ (6/7\ Detected)}$" + "\n" +
-                   r"$\mathbf{Specificity} = \mathbf{63.64\%\ (35/55\ Cleared)}$" + "\n" +
-                   r"$\mathbf{NPV} = \mathbf{97.22\%} \mid \mathrm{PPV} = 23.08\%$" + "\n" +
-                   r"$\mathrm{Prevalence\text{-}Adj.\ PPV} = 25.19\%$" + "\n" +
-                   r"$\mathrm{Balanced}\ F_1 = 0.3636$",
-              face_col='#FFFBEB', edge_col='#F59E0B', text_col='#92400E', font_size=7.0, font_weight='bold')
+              text=r"$\hat{y} = \mathbb{I}(P_{\mathrm{Fusion}} \geq \tau_{\mathrm{diag}}^*)$" + "\n\n" +
+                   r"$\bullet$ Operational Target: Maximize Balanced $F_1$" + "\n" +
+                   r"$\bullet$ Threshold calibrated strictly on Train OOF" + "\n" +
+                   r"$\bullet$ Conserves secondary psychiatric resources" + "\n" +
+                   r"$\bullet$ Controls false alarms in clinical referrals",
+              face_col='#FFFBEB', edge_col='#F59E0B', text_col='#92400E', font_size=6.9, font_weight='normal')
 
-    # Policy Banner at Bottom
+    # Zero Threshold Search Guarantee Pill
     draw_pill(ax, 11.90, 1.05, 2.90, 0.65,
-              text="Zero Threshold Search on Test Cohort",
+              text="Zero Threshold Tuning on Held-Out Test Data",
               face_col='#FAF5FF', edge_col='#C084FC', text_col='#6B21A8', font_size=7.0, font_weight='bold')
 
-    draw_arrow(ax, 14.95, 5.20, 15.35, 5.20, color='#7C3AED', lw=2.0, badge=r'$\tau^*=0.56$', badge_col='#7C3AED')
+    draw_arrow(ax, 14.95, 5.20, 15.35, 5.20, color='#7C3AED', lw=2.0, badge=r'$\hat{y} \in \{0, 1\}$', badge_col='#7C3AED')
 
     # =========================================================================
-    # COLUMN 5: PROSPECTIVE CLINICAL TRIAGE MATRIX (x in [15.35, 18.35], w = 3.00)
+    # COLUMN 5: ACTIONABLE CLINICAL DECISION PATHWAYS (x in [15.35, 18.35], w = 3.00)
     # =========================================================================
     c5_box = patches.FancyBboxPatch((15.35, 0.80), 3.00, 8.20, boxstyle="round,pad=0.10,rounding_size=0.18",
                                     facecolor='#F8FAFC', edgecolor='#0F172A', lw=1.5, zorder=5)
     ax.add_patch(c5_box)
 
     draw_3d_block(ax, 15.45, 8.15, 2.80, 0.70, depth=0.18, face_col='#0F172A', top_col='#334155', side_col='#020617')
-    ax.text(16.85, 8.50, "5. Prospective Triage ($n=62$)", ha='center', va='center',
-            color='white', fontsize=9.4, fontweight='bold', zorder=25)
+    ax.text(16.85, 8.50, "5. Clinical Action Pathways", ha='center', va='center',
+            color='white', fontsize=9.6, fontweight='bold', zorder=25)
 
-    # Visual: Authentic Streamlined Confusion Matrix
-    cm_x0, cm_y0, cm_w, cm_h = 15.55, 5.35, 2.60, 2.45
-    cm_card = patches.FancyBboxPatch((cm_x0, cm_y0), cm_w, cm_h, boxstyle="round,pad=0.06,rounding_size=0.10",
-                                     facecolor='#FFFFFF', edgecolor='#0F172A', lw=1.2, zorder=10)
-    ax.add_patch(cm_card)
-
-    ax.text(cm_x0 + cm_w/2, cm_y0 + cm_h - 0.22, r"Test Confusion Matrix ($\tau^* = 0.56$)",
+    # Decision Split Header
+    ax.text(16.85, 7.82, r"Decision Rule: $\hat{y} = \mathbb{I}(P_{\mathrm{Fusion}} \geq \tau)$",
             ha='center', va='center', color='#0F172A', fontsize=7.6, fontweight='bold', zorder=20)
 
-    # Matrix Cells (35, 20, 1, 6)
-    cells = [
-        (cm_x0 + 0.25, cm_y0 + 1.05, 1.05, 0.85, '#DBEAFE', '35\n(63.6%)', 'TN', '#1E40AF'),
-        (cm_x0 + 1.35, cm_y0 + 1.05, 1.05, 0.85, '#F1F5F9', '20\n(36.4%)', 'FP', '#475569'),
-        (cm_x0 + 0.25, cm_y0 + 0.15, 1.05, 0.80, '#FEF2F2', '1\n(14.3%)', 'FN', '#DC2626'),
-        (cm_x0 + 1.35, cm_y0 + 0.15, 1.05, 0.80, '#DCFCE7', '6\n(85.7%)', 'TP', '#15803D')
-    ]
-    for cx, cy, cw, ch, bg, txt, tag, txt_c in cells:
-        ax.add_patch(patches.Rectangle((cx, cy), cw, ch, facecolor=bg, edgecolor='#CBD5E1', lw=0.8, zorder=12))
-        ax.text(cx + cw/2, cy + ch/2 + 0.08, txt, ha='center', va='center', color=txt_c, fontsize=7.6, fontweight='bold', zorder=20)
-        ax.text(cx + cw - 0.08, cy + 0.08, tag, ha='right', va='bottom', color='#94A3B8', fontsize=6.2, fontweight='bold', zorder=20)
+    # Pathway 1: Positive Alert (Incident Anxiety Vulnerability)
+    path1 = patches.FancyBboxPatch((15.50, 4.35), 2.70, 3.25, boxstyle="round,pad=0.08,rounding_size=0.12",
+                                   facecolor='#FEF2F2', edgecolor='#DC2626', lw=1.5, zorder=10)
+    ax.add_patch(path1)
+    draw_alert_icon(ax, 15.80, 7.25, s=0.20, col='#DC2626', zorder=25)
+    ax.text(16.95, 7.25, "Incident Risk Alert\n" + r"$(\hat{y} = 1:\ \mathrm{Positive\ Triage})$",
+            ha='center', va='center', color='#991B1B', fontsize=7.6, fontweight='bold', zorder=20)
 
-    # Axis labels for matrix
-    ax.text(cm_x0 + 0.77, cm_y0 + 1.98, "Non-Trans", ha='center', va='center', color='#64748B', fontsize=6.6, fontweight='bold', zorder=20)
-    ax.text(cm_x0 + 1.87, cm_y0 + 1.98, "Incident", ha='center', va='center', color='#64748B', fontsize=6.6, fontweight='bold', zorder=20)
-    ax.text(cm_x0 + 0.12, cm_y0 + 1.48, "0", ha='center', va='center', color='#64748B', fontsize=6.6, fontweight='bold', zorder=20)
-    ax.text(cm_x0 + 0.12, cm_y0 + 0.55, "1", ha='center', va='center', color='#64748B', fontsize=6.6, fontweight='bold', zorder=20)
+    draw_pill(ax, 15.60, 4.50, 2.50, 2.45,
+              text="Actionable Clinical Protocol:\n\n" +
+                   r"$\bullet$ Prioritized Specialist Assessment:" + "\n" +
+                   r"  Comprehensive clinical diagnostic" + "\n" +
+                   r"  interview (ADIS / K-SADS-PL)" + "\n\n" +
+                   r"$\bullet$ Early Preventative Intervention:" + "\n" +
+                   r"  Cognitive-Behavioral Therapy (CBT)" + "\n" +
+                   r"  and parent guidance protocols" + "\n\n" +
+                   r"$\bullet$ Longitudinal Symptom Tracking:" + "\n" +
+                   r"  6-month multi-informant follow-ups",
+              face_col='#FFFFFF', edge_col='#FCA5A5', text_col='#7F1D1D', font_size=6.8, font_weight='normal')
 
-    # Clinical Impact & NNS Card
-    draw_pill(ax, 15.55, 3.05, 2.60, 2.10,
-              text="Public Health Utility:\n\n" +
-                   r"$\bullet$ Number Needed to Screen:" + "\n" +
-                   r"  $\mathrm{NNS} \approx 9.3 \approx 9\ \mathrm{youth}$" + "\n" +
-                   r"$\bullet$ Pre-Filtering Efficiency:" + "\n" +
-                   r"  Clears 63.6% of healthy youth" + "\n" +
-                   r"$\bullet$ Doubled Risk Concentration:" + "\n" +
-                   r"  $\mathrm{Prevalence:\ 12.5\% \to 25.2\%}$",
-              face_col='#FFFFFF', edge_col='#94A3B8', text_col='#0F172A', font_size=6.9, font_weight='normal')
+    # Pathway 2: Negative Rule-Out (Non-Transitioned)
+    path0 = patches.FancyBboxPatch((15.50, 0.95), 2.70, 3.25, boxstyle="round,pad=0.08,rounding_size=0.12",
+                                   facecolor='#ECFDF5', edgecolor='#059669', lw=1.5, zorder=10)
+    ax.add_patch(path0)
+    draw_shield_icon(ax, 15.80, 3.85, s=0.20, col='#059669', zorder=25)
+    ax.text(16.95, 3.85, "Non-Transitioned\n" + r"$(\hat{y} = 0:\ \mathrm{Rule\text{-}Out})$",
+            ha='center', va='center', color='#065F46', fontsize=7.6, fontweight='bold', zorder=20)
 
-    # Statistical Multiplicity Verification Badge
-    draw_pill(ax, 15.55, 1.05, 2.60, 1.85,
-              text="Statistical Multiplicity Audit:\n(5,000 Family-Cluster Bootstrap)\n\n" +
-                   r"$\bullet$ vs.\ Chance ($\mathcal{H}_0: \text{AUC} \leq 0.50$):" + "\n" +
-                   r"  $p = 0.0020\ (**\ \mathrm{FDR}\ q=0.0160)$" + "\n" +
-                   r"$\bullet$ vs.\ sMRI Alone:" + "\n" +
-                   r"  $p = 0.4544\ (\mathrm{Non\text{-}Significant})$",
-              face_col='#F1F5F9', edge_col='#64748B', text_col='#334155', font_size=6.8, font_weight='bold')
+    draw_pill(ax, 15.60, 1.10, 2.50, 2.45,
+              text="Actionable Clinical Protocol:\n\n" +
+                   r"$\bullet$ Reassurance & Routine Care:" + "\n" +
+                   r"  Continued standard primary pediatric" + "\n" +
+                   r"  developmental observation" + "\n\n" +
+                   r"$\bullet$ Unnecessary Burden Prevention:" + "\n" +
+                   r"  Avoids overburdening specialized" + "\n" +
+                   r"  pediatric mental health clinics" + "\n\n" +
+                   r"$\bullet$ Digital Community Resources:" + "\n" +
+                   r"  School and family mental literacy",
+              face_col='#FFFFFF', edge_col='#6EE7B7', text_col='#064E3B', font_size=6.8, font_weight='normal')
 
     save_figure_to_all_locations(fig, "Fig5_Multimodal_Fusion")
     plt.close(fig)

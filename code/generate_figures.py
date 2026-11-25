@@ -4,18 +4,19 @@ generate_figures.py
 Publication-Quality Figure Generation Engine (300 DPI PNG & TIFF)
 REVISION_PAPER_PRO_MAX (Strict Zero-Leakage & Transparent Q1 Revision)
 
-Generates all 13 figures fresh from code and model data (ZERO old file copying):
+Generates all 14 publication figures fresh from code and model data (ZERO old file copying):
 - Fig1_Overall_Framework (.png & .tif)
 - Fig2_MRI_Preprocessing (.png & .tif)
 - Fig3_Questionnaire_Pipeline (.png & .tif)
 - Fig4_Prototypical_Network (.png & .tif)
-- Fig5_Confusion_Matrix (.png & .tif)
-- Fig6_Ablation_Study (.png & .tif)
-- Fig7_Bootstrap_CI (.png & .tif)
-- Fig8_Module2_SHAP_Summary (.png & .tif)
-- Fig9_Module2_Feature_Importance (.png & .tif)
-- Fig10_Module3_SHAP_Summary (.png & .tif)
-- Fig11_Module3_Feature_Importance (.png & .tif)
+- Fig5_Multimodal_Fusion (.png & .tif)  [Pure Architectural Engine & Calibration Pathways]
+- Fig6_Confusion_Matrix (.png & .tif)   [Held-out Test Cohort, n=62, tau*=0.56]
+- Fig7_Ablation_Study (.png & .tif)     [Unimodal vs Dual vs Multimodal Ensembling]
+- Fig8_Bootstrap_CI (.png & .tif)       [95% Family-Cluster Bootstrap Confidence Intervals]
+- Fig9_Module2_SHAP_Summary (.png & .tif)       [M2 Questionnaire SHAP Beeswarm]
+- Fig10_Module2_Feature_Importance (.png & .tif)[M2 Questionnaire Feature Importance Bar]
+- Fig11_Module3_SHAP_Summary (.png & .tif)      [M3 Phenotypic SHAP Beeswarm]
+- Fig12_Module3_Feature_Importance (.png & .tif)[M3 Phenotypic Feature Importance Bar]
 - Fig_ROC_PR_Curves (.png & .tif)
 - Fig_Cross_Modal_Attention (.png & .tif)
 """
@@ -36,28 +37,45 @@ plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'Helvetica']
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['text.color'] = '#0F172A'
 plt.rcParams['axes.edgecolor'] = '#CBD5E1'
+plt.rcParams['mathtext.fontset'] = 'dejavusans'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 CODE_DIR = BASE_DIR / 'code'
-OUT_DIR = BASE_DIR / 'figures'
-OUT_DIR.mkdir(parents=True, exist_ok=True)
 RESULTS_DIR = BASE_DIR / 'results'
 PROCESSED_DIR = BASE_DIR / 'data' / 'processed'
 SPLITS_DIR = BASE_DIR / 'data' / 'splits'
 
+OUT_DIRS = [
+    BASE_DIR / 'figures',
+    BASE_DIR / 'results',
+    BASE_DIR.parent / 'figures' if BASE_DIR.name == 'REVISION_PAPER_PRO_MAX' else BASE_DIR / 'REVISION_PAPER_PRO_MAX' / 'figures',
+    BASE_DIR.parent / 'results' if BASE_DIR.name == 'REVISION_PAPER_PRO_MAX' else BASE_DIR / 'REVISION_PAPER_PRO_MAX' / 'results'
+]
+OUT_DIRS = [d for d in OUT_DIRS if d.parent.exists()]
+for d in OUT_DIRS:
+    d.mkdir(parents=True, exist_ok=True)
+
+def save_fig_all(fig, basename):
+    """Saves figure at 300 DPI (PNG and TIFF) to all target directories."""
+    for d in OUT_DIRS:
+        fig.savefig(d / f"{basename}.png", dpi=300, bbox_inches='tight')
+        fig.savefig(d / f"{basename}.tif", dpi=300, bbox_inches='tight')
+    print(f"  [SAVED] {basename}.png & .tif exported to {len(OUT_DIRS)} destination directories.")
+
+# Load ground truth and predictions
 y_test = pd.read_csv(SPLITS_DIR / 'test.csv')['internalizing_incident'].values.astype(int)
 
-# Load test predictions
 p_m1 = np.load(PROCESSED_DIR / 'm1_test_probs.npy')
 p_m2 = np.load(PROCESSED_DIR / 'm2_test_probs.npy')
 p_m3 = np.load(PROCESSED_DIR / 'm3_test_probs.npy')
 p_fuse_eq = np.load(PROCESSED_DIR / 'p_te_eq.npy') if (PROCESSED_DIR / 'p_te_eq.npy').exists() else (p_m1 + p_m2 + p_m3) / 3.0
 p_fuse_rank = np.load(PROCESSED_DIR / 'p_te_rank.npy') if (PROCESSED_DIR / 'p_te_rank.npy').exists() else p_fuse_eq
 
+
 # =========================================================================
-# FIGURE 5: PUBLICATION CONFUSION MATRIX (Synced with Manuscript Table 4)
+# FIGURE 6: PUBLICATION CONFUSION MATRIX (Synced with Manuscript Table 4)
 # =========================================================================
-def plot_fig5():
+def plot_fig6():
     fig, ax = plt.subplots(figsize=(6.0, 5.2), dpi=300)
     fig.patch.set_facecolor('#FFFFFF')
     ax.set_facecolor('#FFFFFF')
@@ -94,20 +112,20 @@ def plot_fig5():
     ax.set_xlabel('Predicted Clinical Status', fontsize=11.5, fontweight='bold', labelpad=10)
     ax.set_ylabel('True Clinical Status', fontsize=11.5, fontweight='bold', labelpad=10)
     
-    ax.set_title(r'$\mathbf{Figure\ 5:\ Test\ Cohort\ Confusion\ Matrix}\ (n=62,\ \tau^* = 0.56)$' + '\n' +
+    ax.set_title(r'$\mathbf{Figure\ 6:\ Test\ Cohort\ Confusion\ Matrix}\ (n=62,\ \tau^* = 0.56)$' + '\n' +
                  r'$\mathrm{Primary\ Multimodal\ Fusion\ (ROC\text{-}AUC} = 0.8091)$',
                  fontsize=11.5, fontweight='bold', pad=12)
     
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig5_Confusion_Matrix.png', dpi=300, bbox_inches='tight')
-    fig.savefig(OUT_DIR / 'Fig5_Confusion_Matrix.tif', dpi=300, bbox_inches='tight')
+    save_fig_all(fig, 'Fig6_Confusion_Matrix')
     plt.close(fig)
-    print("  [OK] Fig 5 generated (Clean, streamlined publication matrix).")
+    print("  [OK] Fig 6 generated (Clean, streamlined publication matrix).")
+
 
 # =========================================================================
-# FIGURE 6: MULTIMODAL ABLATION STUDY
+# FIGURE 7: MULTIMODAL ABLATION STUDY
 # =========================================================================
-def plot_fig6():
+def plot_fig7():
     models = ['sMRI Alone (M1)', 'Quest Alone (M2)', 'Pheno Alone (M3)', 'M1 + M2', 'M1 + M3', 'M2 + M3', 'Dawes Equal Avg', 'Rank Averaging']
     p_m12 = (p_m1 + p_m2) / 2
     p_m13 = (p_m1 + p_m3) / 2
@@ -133,19 +151,19 @@ def plot_fig6():
         w = b.get_width()
         ax.text(w + 0.008, b.get_y() + b.get_height()/2, f'{w:.4f}', va='center', fontsize=9.5, fontweight='bold', color='#0F172A')
     ax.set_xlabel('Held-Out Prospective Test ROC-AUC', fontsize=11.5, fontweight='bold')
-    ax.set_title('Figure 6: Multimodal Ablation Hierarchy & Ensembling Gain', fontsize=12.5, fontweight='bold', pad=12)
+    ax.set_title('Figure 7: Multimodal Ablation Hierarchy & Ensembling Gain', fontsize=12.5, fontweight='bold', pad=12)
     ax.grid(axis='x', linestyle=':', alpha=0.5)
     ax.legend(loc='lower right', fontsize=9.5)
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig6_Ablation_Study.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig6_Ablation_Study.tif', dpi=300)
+    save_fig_all(fig, 'Fig7_Ablation_Study')
     plt.close(fig)
-    print("  [OK] Fig 6 generated.")
+    print("  [OK] Fig 7 generated.")
+
 
 # =========================================================================
-# FIGURE 7: 95% CLUSTER BOOTSTRAP CONFIDENCE INTERVALS
+# FIGURE 8: 95% CLUSTER BOOTSTRAP CONFIDENCE INTERVALS
 # =========================================================================
-def plot_fig7():
+def plot_fig8():
     fig, ax = plt.subplots(figsize=(8.8, 5.0), dpi=300)
     fig.patch.set_facecolor('#FFFFFF')
     ax.set_facecolor('#FFFFFF')
@@ -162,7 +180,6 @@ def plot_fig7():
     if mult_path.exists():
         df_mult = pd.read_csv(mult_path)
         row_dict = {row['Model']: row for _, row in df_mult.iterrows()}
-        y_pos = np.arange(len(models_to_plot))
         for i, (orig_name, display_name, col) in enumerate(models_to_plot):
             if orig_name in row_dict:
                 row = row_dict[orig_name]
@@ -177,20 +194,20 @@ def plot_fig7():
     ax.set_yticks(range(len(models_to_plot)))
     ax.set_yticklabels([m[1] for m in models_to_plot], fontsize=10.2, fontweight='bold')
     ax.set_xlabel('Held-Out Prospective Test ROC-AUC (5,000 Family-Cluster Resamples)', fontsize=11.0, fontweight='bold')
-    ax.set_title('Figure 7: 95% Family-Cluster Bootstrap Confidence Intervals', fontsize=12.2, fontweight='bold', pad=12)
+    ax.set_title('Figure 8: 95% Family-Cluster Bootstrap Confidence Intervals', fontsize=12.2, fontweight='bold', pad=12)
     ax.set_xlim(0.25, 1.0)
     ax.grid(axis='x', linestyle=':', alpha=0.6)
     ax.legend(loc='lower right', fontsize=9.5)
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig7_Bootstrap_CI.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig7_Bootstrap_CI.tif', dpi=300)
+    save_fig_all(fig, 'Fig8_Bootstrap_CI')
     plt.close(fig)
-    print("  [OK] Fig 7 generated.")
+    print("  [OK] Fig 8 generated.")
+
 
 # =========================================================================
-# FIGURE 8 & 9: MODULE 2 SHAP SUMMARY (BEESWARM) & FEATURE IMPORTANCE (BAR)
+# FIGURE 9 & 10: MODULE 2 SHAP SUMMARY (BEESWARM) & FEATURE IMPORTANCE (BAR)
 # =========================================================================
-def plot_fig8_and_9():
+def plot_fig9_and_10():
     shap_m2 = np.load(RESULTS_DIR / 'shap_values_m2.npy')
     X_m2 = np.load(RESULTS_DIR / 'X_te_q.npy')
     with open(RESULTS_DIR / 'shap_summary.json') as f:
@@ -214,28 +231,7 @@ def plot_fig8_and_9():
     }
     display_names = [feat_label_map.get(f, f) for f in feat_names]
     
-    # Figure 9: Ranked Feature Importance Bar Chart
-    fig, ax = plt.subplots(figsize=(8.5, 5.2), dpi=300)
-    fig.patch.set_facecolor('#FFFFFF')
-    ax.set_facecolor('#FFFFFF')
-    y_pos = np.arange(len(feat_names))
-    bars = ax.barh(y_pos, mean_abs[::-1], color='#0284C7', edgecolor='#0369A1', height=0.62)
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(display_names[::-1], fontsize=9.6, fontweight='bold')
-    for b in bars:
-        w = b.get_width()
-        ax.text(w + 0.0015, b.get_y() + b.get_height()/2, f'{w:.4f}', va='center', fontsize=9.0, fontweight='bold', color='#0F172A')
-    ax.set_xlabel('Mean Absolute SHAP Value (Test Cohort, n=62)', fontsize=11.0, fontweight='bold')
-    ax.set_title('Figure 9: Module 2 Feature Importance Ranked by Mean |SHAP|', fontsize=12.0, fontweight='bold', pad=12)
-    ax.grid(axis='x', linestyle=':', alpha=0.5)
-    ax.set_xlim(0, max(mean_abs) * 1.15)
-    plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig9_Module2_Feature_Importance.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig9_Module2_Feature_Importance.tif', dpi=300)
-    plt.close(fig)
-    print("  [OK] Fig 9 generated directly from shap_summary.json.")
-    
-    # Figure 8: SHAP Beeswarm Summary Plot
+    # Figure 9: SHAP Beeswarm Summary Plot
     fig, ax = plt.subplots(figsize=(8.8, 5.6), dpi=300)
     fig.patch.set_facecolor('#FFFFFF')
     ax.set_facecolor('#FFFFFF')
@@ -252,21 +248,41 @@ def plot_fig8_and_9():
     ax.set_yticks(range(len(feat_names)))
     ax.set_yticklabels(display_names[::-1], fontsize=9.6, fontweight='bold')
     ax.set_xlabel('SHAP Value (Impact on Prospective Incident Anxiety Risk)', fontsize=11.0, fontweight='bold')
-    ax.set_title('Figure 8: SHAP Summary Beeswarm Plot for Module 2 Transition Markers', fontsize=12.0, fontweight='bold', pad=12)
+    ax.set_title('Figure 9: SHAP Summary Beeswarm Plot for Module 2 Transition Markers', fontsize=12.0, fontweight='bold', pad=12)
     cbar = plt.colorbar(sc, ax=ax, orientation='vertical', fraction=0.038, pad=0.03)
     cbar.set_label('Standardized Feature Value', fontsize=9.5, fontweight='bold', labelpad=6)
     cbar.set_ticks([0.05, 0.95])
     cbar.set_ticklabels(['Low', 'High'])
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig8_Module2_SHAP_Summary.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig8_Module2_SHAP_Summary.tif', dpi=300)
+    save_fig_all(fig, 'Fig9_Module2_SHAP_Summary')
     plt.close(fig)
-    print("  [OK] Fig 8 generated directly from shap_values_m2.npy.")
+    print("  [OK] Fig 9 generated directly from shap_values_m2.npy.")
+
+    # Figure 10: Ranked Feature Importance Bar Chart
+    fig, ax = plt.subplots(figsize=(8.5, 5.2), dpi=300)
+    fig.patch.set_facecolor('#FFFFFF')
+    ax.set_facecolor('#FFFFFF')
+    y_pos = np.arange(len(feat_names))
+    bars = ax.barh(y_pos, mean_abs[::-1], color='#0284C7', edgecolor='#0369A1', height=0.62)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(display_names[::-1], fontsize=9.6, fontweight='bold')
+    for b in bars:
+        w = b.get_width()
+        ax.text(w + 0.0015, b.get_y() + b.get_height()/2, f'{w:.4f}', va='center', fontsize=9.0, fontweight='bold', color='#0F172A')
+    ax.set_xlabel('Mean Absolute SHAP Value (Test Cohort, n=62)', fontsize=11.0, fontweight='bold')
+    ax.set_title('Figure 10: Module 2 Feature Importance Ranked by Mean |SHAP|', fontsize=12.0, fontweight='bold', pad=12)
+    ax.grid(axis='x', linestyle=':', alpha=0.5)
+    ax.set_xlim(0, max(mean_abs) * 1.15)
+    plt.tight_layout()
+    save_fig_all(fig, 'Fig10_Module2_Feature_Importance')
+    plt.close(fig)
+    print("  [OK] Fig 10 generated directly from shap_summary.json.")
+
 
 # =========================================================================
-# FIGURE 10 & 11: MODULE 3 SHAP SUMMARY (BEESWARM) & FEATURE IMPORTANCE (BAR)
+# FIGURE 11 & 12: MODULE 3 SHAP SUMMARY (BEESWARM) & FEATURE IMPORTANCE (BAR)
 # =========================================================================
-def plot_fig10_and_11():
+def plot_fig11_and_12():
     shap_m3 = np.load(RESULTS_DIR / 'shap_values_m3.npy')
     X_m3 = np.load(RESULTS_DIR / 'X_te_p.npy')
     with open(RESULTS_DIR / 'shap_summary.json') as f:
@@ -284,28 +300,7 @@ def plot_fig10_and_11():
     }
     display_names = [feat_label_map.get(f, f) for f in feat_names]
     
-    # Figure 11: Ranked Feature Importance Bar Chart
-    fig, ax = plt.subplots(figsize=(8.5, 3.8), dpi=300)
-    fig.patch.set_facecolor('#FFFFFF')
-    ax.set_facecolor('#FFFFFF')
-    y_pos = np.arange(len(feat_names))
-    bars = ax.barh(y_pos, mean_abs[::-1], color='#D97706', edgecolor='#B45309', height=0.55)
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(display_names[::-1], fontsize=9.6, fontweight='bold')
-    for b in bars:
-        w = b.get_width()
-        ax.text(w + 0.0012, b.get_y() + b.get_height()/2, f'{w:.4f}', va='center', fontsize=9.2, fontweight='bold', color='#0F172A')
-    ax.set_xlabel('Mean Absolute SHAP Value (Test Cohort, n=62)', fontsize=11.0, fontweight='bold')
-    ax.set_title('Figure 11: Module 3 Feature Importance Ranked by Mean |SHAP|', fontsize=12.0, fontweight='bold', pad=12)
-    ax.grid(axis='x', linestyle=':', alpha=0.5)
-    ax.set_xlim(0, max(mean_abs) * 1.18)
-    plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig11_Module3_Feature_Importance.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig11_Module3_Feature_Importance.tif', dpi=300)
-    plt.close(fig)
-    print("  [OK] Fig 11 generated directly from shap_summary.json.")
-    
-    # Figure 10: SHAP Beeswarm Summary Plot
+    # Figure 11: SHAP Beeswarm Summary Plot
     fig, ax = plt.subplots(figsize=(8.8, 4.2), dpi=300)
     fig.patch.set_facecolor('#FFFFFF')
     ax.set_facecolor('#FFFFFF')
@@ -322,16 +317,36 @@ def plot_fig10_and_11():
     ax.set_yticks(range(len(feat_names)))
     ax.set_yticklabels(display_names[::-1], fontsize=9.6, fontweight='bold')
     ax.set_xlabel('SHAP Value (Impact on Prospective Incident Anxiety Risk)', fontsize=11.0, fontweight='bold')
-    ax.set_title('Figure 10: SHAP Summary Beeswarm Plot for Module 3 Phenotypic Predictors', fontsize=12.0, fontweight='bold', pad=12)
+    ax.set_title('Figure 11: SHAP Summary Beeswarm Plot for Module 3 Phenotypic Predictors', fontsize=12.0, fontweight='bold', pad=12)
     cbar = plt.colorbar(sc, ax=ax, orientation='vertical', fraction=0.038, pad=0.03)
     cbar.set_label('Standardized Feature Value', fontsize=9.5, fontweight='bold', labelpad=6)
     cbar.set_ticks([0.05, 0.95])
     cbar.set_ticklabels(['Low', 'High'])
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig10_Module3_SHAP_Summary.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig10_Module3_SHAP_Summary.tif', dpi=300)
+    save_fig_all(fig, 'Fig11_Module3_SHAP_Summary')
     plt.close(fig)
-    print("  [OK] Fig 10 generated directly from shap_values_m3.npy.")
+    print("  [OK] Fig 11 generated directly from shap_values_m3.npy.")
+
+    # Figure 12: Ranked Feature Importance Bar Chart
+    fig, ax = plt.subplots(figsize=(8.5, 3.8), dpi=300)
+    fig.patch.set_facecolor('#FFFFFF')
+    ax.set_facecolor('#FFFFFF')
+    y_pos = np.arange(len(feat_names))
+    bars = ax.barh(y_pos, mean_abs[::-1], color='#D97706', edgecolor='#B45309', height=0.55)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(display_names[::-1], fontsize=9.6, fontweight='bold')
+    for b in bars:
+        w = b.get_width()
+        ax.text(w + 0.0012, b.get_y() + b.get_height()/2, f'{w:.4f}', va='center', fontsize=9.2, fontweight='bold', color='#0F172A')
+    ax.set_xlabel('Mean Absolute SHAP Value (Test Cohort, n=62)', fontsize=11.0, fontweight='bold')
+    ax.set_title('Figure 12: Module 3 Feature Importance Ranked by Mean |SHAP|', fontsize=12.0, fontweight='bold', pad=12)
+    ax.grid(axis='x', linestyle=':', alpha=0.5)
+    ax.set_xlim(0, max(mean_abs) * 1.18)
+    plt.tight_layout()
+    save_fig_all(fig, 'Fig12_Module3_Feature_Importance')
+    plt.close(fig)
+    print("  [OK] Fig 12 generated directly from shap_summary.json.")
+
 
 # =========================================================================
 # FIGURE: ROC & PRECISION-RECALL CURVES
@@ -372,10 +387,10 @@ def plot_roc_pr():
     ax2.grid(True, linestyle=':', alpha=0.5)
     
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig_ROC_PR_Curves.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig_ROC_PR_Curves.tif', dpi=300)
+    save_fig_all(fig, 'Fig_ROC_PR_Curves')
     plt.close(fig)
     print("  [OK] Fig ROC/PR Curves generated.")
+
 
 # =========================================================================
 # FIGURE: CROSS-MODAL ATTENTION MATRIX & POOLING CONTRIBUTIONS
@@ -422,10 +437,10 @@ def plot_cross_modal_attention():
     ax_pool.grid(axis='y', linestyle=':', alpha=0.5)
     
     plt.tight_layout()
-    fig.savefig(OUT_DIR / 'Fig_Cross_Modal_Attention.png', dpi=300)
-    fig.savefig(OUT_DIR / 'Fig_Cross_Modal_Attention.tif', dpi=300)
+    save_fig_all(fig, 'Fig_Cross_Modal_Attention')
     plt.close(fig)
     print("  [OK] Fig_Cross_Modal_Attention generated directly.")
+
 
 # =========================================================================
 # MASTER FIGURE GENERATION (CALL ARCHITECTURE GENERATOR DIRECTLY)
@@ -443,16 +458,16 @@ def run_architecture_figures():
 
 if __name__ == '__main__':
     print("=" * 80)
-    print("GENERATING ALL 13 PUBLICATION FIGURES (300 DPI, ZERO LEGACY FILE COPY)")
+    print("GENERATING ALL 14 PUBLICATION FIGURES (300 DPI, ZERO LEGACY FILE COPY)")
     print("=" * 80)
-    plot_fig5()
-    plot_fig6()
-    plot_fig7()
-    plot_fig8_and_9()
-    plot_fig10_and_11()
-    plot_roc_pr()
-    plot_cross_modal_attention()
-    run_architecture_figures()
+    run_architecture_figures()  # Figs 1, 2, 3, 4, 5
+    plot_fig6()                 # Fig 6: Confusion Matrix
+    plot_fig7()                 # Fig 7: Ablation Study
+    plot_fig8()                 # Fig 8: 95% Cluster Bootstrap CI
+    plot_fig9_and_10()          # Fig 9: M2 SHAP Beeswarm & Fig 10: M2 Feature Importance
+    plot_fig11_and_12()         # Fig 11: M3 SHAP Beeswarm & Fig 12: M3 Feature Importance
+    plot_roc_pr()               # Fig: ROC & PR Curves
+    plot_cross_modal_attention()# Fig: Cross-Modal Attention Matrix & Pooling
     print("\n" + "=" * 80)
-    print(f"ALL 13 PUBLICATION FIGURES VERIFIED & READY IN: {OUT_DIR}")
+    print("ALL 14 PUBLICATION FIGURES VERIFIED & READY IN ALL DESTINATIONS")
     print("=" * 80)

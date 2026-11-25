@@ -215,7 +215,21 @@ REVISION_PAPER_PRO_MAX/
 │   ├── plos_latex_HIGHLIGHT.tex      # Highlighted revised LaTeX manuscript showing changes
 │   ├── plos_bibtex_sample.bib        # BibTeX bibliography
 │   └── plos2025.bst                  # PLOS ONE bibliography style
-├── figures/                          # All 13 publication figures (PNG and TIFF at 300 DPI)
+├── figures/                          # All 14 publication figures (PNG and TIFF at 300 DPI)
+│   ├── Fig1_Overall_Framework (.png & .tif)
+│   ├── Fig2_MRI_Preprocessing (.png & .tif)
+│   ├── Fig3_Questionnaire_Pipeline (.png & .tif)
+│   ├── Fig4_Prototypical_Network (.png & .tif)
+│   ├── Fig5_Multimodal_Fusion (.png & .tif)
+│   ├── Fig6_Confusion_Matrix (.png & .tif)
+│   ├── Fig7_Ablation_Study (.png & .tif)
+│   ├── Fig8_Bootstrap_CI (.png & .tif)
+│   ├── Fig9_Module2_SHAP_Summary (.png & .tif)
+│   ├── Fig10_Module2_Feature_Importance (.png & .tif)
+│   ├── Fig11_Module3_SHAP_Summary (.png & .tif)
+│   ├── Fig12_Module3_Feature_Importance (.png & .tif)
+│   ├── Fig_ROC_PR_Curves (.png & .tif)
+│   └── Fig_Cross_Modal_Attention (.png & .tif)
 ├── models/                           # Serialized models (.pkl) and deep checkpoints (.pth)
 ├── results/                          # Metric tables, multiplicity audits, and SHAP matrices
 ├── requirements.txt                  # Python dependencies

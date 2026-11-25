@@ -455,14 +455,14 @@ To provide clinicians with interpretable explanations for model decisions, SHAP 
 
 \textbf{Module 2 (Questionnaire):} Table~\ref{tab:module2_shap} lists the 9 clinical questionnaire features ranked by mean absolute SHAP value ($|\mathrm{SHAP}|$). Parent-reported somatic tension (\texttt{pSDQ03}, mean $|\mathrm{SHAP}| = 0.0844$; frequent complaints of headaches, stomachaches, or sickness) emerged as the single strongest prospective behavioral predictor. This was followed by parent-child informant discrepancy regarding social anxiety (\texttt{diff\_26} = \texttt{pSCAS26} - \texttt{SCAS26}, mean $|\mathrm{SHAP}| = 0.0502$), where parental perception of social distress exceeding self-report signals early masked vulnerability. Parent-reported social phobia score (\texttt{pSCAS\_socpho\_score}, 0.0430) and child self-reported social phobia (\texttt{SCAS\_socpho\_score}, 0.0347) contributed substantial secondary prospective discrimination. In addition, neurovegetative and somatic exhaustion markers from the SPHERE inventory (\texttt{SPHERE07} poor concentration/mental fatigue, 0.0264; \texttt{SPHERE08} headaches/somatic distress, 0.0239) capture early physical fatigue preceding clinical manifestation.
 
-% Figure 8 caption - figure file to be uploaded separately (Fig8_Module2_SHAP_Summary.png)
+% Figure 9 caption - figure file to be uploaded separately (Fig9_Module2_SHAP_Summary.png)
 \begin{figure}[!h]
 \caption{\textbf{SHAP summary beeswarm plot for Module 2 (Questionnaire) transition markers.}
 Distribution of SHAP values across held-out test participants ($n=62$) for the 9 transition features. Points represent individual participants; color denotes feature value (red = elevated symptom level, blue = low symptom level). Elevated parent-reported somatic tension and social phobia discrepancy strongly drive positive transition risk predictions.}
 \label{fig:module2_shap_summary}
 \end{figure}
 
-% Figure 9 caption - figure file to be uploaded separately (Fig9_Module2_Feature_Importance.png)
+% Figure 10 caption - figure file to be uploaded separately (Fig10_Module2_Feature_Importance.png)
 \begin{figure}[!h]
 \caption{\textbf{Ranked feature importance for Module 2 (Questionnaire).}
 Bar chart displaying the mean absolute SHAP value for all 9 transition features, corresponding to Fig~\ref{fig:module2_shap_summary}.}
@@ -507,14 +507,14 @@ Table notes: All 9 questionnaire transition features from Module 2 ranked by mea
 
 \textbf{Module 3 (Phenotypic):} Table~\ref{tab:module3_shap} displays feature attributions for the four static phenotypic and demographic predictors. Area-level socio-economic disadvantage (\texttt{birth\_IRSD\_decile}, mean $|\mathrm{SHAP}| = 0.0647$) and economic resources (\texttt{birth\_IER\_decile}, 0.0510) exerted the strongest influence, indicating that developmental environmental adversity and family economic strain significantly elevate prospective transition risk. Physical pubertal growth acceleration relative to age (\texttt{pPDS01\_ses01}, 0.0388) and composite socio-economic advantage/disadvantage (\texttt{birth\_IRSAD\_decile}, 0.0384) provided meaningful developmental context.
 
-% Figure 10 caption - figure file to be uploaded separately (Fig10_Module3_SHAP_Summary.png)
+% Figure 11 caption - figure file to be uploaded separately (Fig11_Module3_SHAP_Summary.png)
 \begin{figure}[!h]
 \caption{\textbf{SHAP summary beeswarm plot for Module 3 (Phenotypic) predictors.}
 Distribution of SHAP values across test participants ($n=62$) for static traits. Environmental socio-economic disadvantage and accelerated pubertal development correspond to increased predicted risk.}
 \label{fig:module3_shap_summary}
 \end{figure}
 
-% Figure 11 caption - figure file to be uploaded separately (Fig11_Module3_Feature_Importance.png)
+% Figure 12 caption - figure file to be uploaded separately (Fig12_Module3_Feature_Importance.png)
 \begin{figure}[!h]
 \caption{\textbf{Ranked feature importance for Module 3 (Phenotypic).}
 Bar chart of mean absolute SHAP values across the four static demographic and developmental traits, corresponding to Fig~\ref{fig:module3_shap_summary}.}
