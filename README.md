@@ -197,7 +197,8 @@ REVISION_PAPER_PRO_MAX/
 │   ├── 04_multimodal_fusion.py       # Dawes, Rank Averaging, Stacking, 5000-bootstrap multiplicity audit
 │   ├── 05_shap_analysis.py           # Model-matched LinearExplainer SHAP attribution & importance
 │   ├── 06_feature_selection_audit.py # Empirical symptom inversion demonstration & correlation audits
-│   └── generate_figures.py           # 300 DPI publication figures (13 PNG & TIFF pairs)
+│   ├── generate_publication_architectures.py # Publication-grade 3D scientific architectures (Figs 1–5)
+│   └── generate_figures.py           # 300 DPI publication figures (PNG & TIFF pairs)
 ├── data/
 │   ├── mri/
 │   │   └── standalone__pretrained.npz  # Pretrained neuroimaging feature representations

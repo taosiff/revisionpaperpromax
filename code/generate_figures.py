@@ -434,11 +434,12 @@ def run_architecture_figures():
     import sys
     sys.path.insert(0, str(CODE_DIR))
     import generate_publication_architectures as gpa
-    print("\n--- Generating Publication Architectures (Figs 1-4) ---")
+    print("\n--- Generating Publication Architectures (Figs 1-5) ---")
     gpa.build_fig1()
     gpa.build_fig2()
     gpa.build_fig3()
     gpa.build_fig4()
+    gpa.build_fig5()
 
 if __name__ == '__main__':
     print("=" * 80)
