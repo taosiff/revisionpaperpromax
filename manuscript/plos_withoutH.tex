@@ -213,7 +213,7 @@
         %
         \section*{Abstract}
 
-Adolescent mental health disorders frequently go undetected in early stages because standard clinical screening lacks integrated biological, behavioral, and phenotypic markers. In this work, we present a twin-aware multimodal deep learning framework evaluated on the Queensland Twin Adolescent Brain (QTAB) cohort ($N=304$; 38 incident cases at 2-year follow-up) for early prediction of incident adolescent anxiety disorder. The framework integrates structural MRI (sMRI), behavioral questionnaires, and static phenotypic attributes while strictly enforcing family-isolated data splitting (90 training, 31 validation, and 31 test families) to eliminate co-twin genetic information leakage. Modality-specific architectures are tailored to low-event clinical data: sMRI representations are extracted via a pretrained 3D ResNet-18 coupled with train-only 5-component principal component analysis and balanced logistic regression; behavioral and phenotypic modules utilize Feature-Tokenizer Transformer Prototypical Networks (FT-ProtoNet) featuring intra-sample multi-head self-attention and balanced episodic prototype learning. Across decision-level fusion paradigms, parameter-free Multimodal Rank Averaging yields superior prospective generalization, achieving a held-out test ROC-AUC of 0.8091 (95\% family-cluster bootstrap CI: 0.6597--0.9306) and Dawes' equal weighting achieves 0.7792 (95\% CI: 0.5578--0.9404). Under dual operational threshold calibration, a universal screening threshold ($\tau = 0.50$) achieves 100.0\% sensitivity (7/7 incident cases detected, 0 false negatives, NPV: 100.0\%) with specificity of 52.73\% (29/55 controls); a train-OOF calibrated diagnostic threshold ($\tau = 0.51$) achieves 85.71\% sensitivity (6/7 detected), specificity of 54.55\% (30/55), and balanced $F_1 = 0.3158$. Unimodal test baselines achieve ROC-AUCs of 0.7221 (sMRI, pretrained ResNet-18 PCA-5), 0.6260 (questionnaire, regularized PCA-3 on 9 transition features), and 0.6870 (phenotypic, regularized L2). Multiplicity-controlled bootstrap testing (5,000 family-cluster resamples) confirms that Rank Averaging significantly exceeds chance (raw $p = 0.0020$, Bonferroni $p = 0.0160$, FDR $q = 0.0160$); however, pairwise comparison indicates that multimodal fusion does not achieve statistically significant superiority over sMRI alone ($p = 0.4544$). In contrast, validation-tuned grid search collapses to test AUC 0.6390 (CI: 0.4576--0.8750) and cross-modal attention to 0.5896, demonstrating severe validation overfitting in small-cohort regimes ($n=7$ validation positives). These findings establish a methodologically transparent, leakage-free benchmark and underscore the critical importance of parameter-free aggregation and conservative statistical reporting in pediatric psychiatric AI.
+Adolescent mental health disorders frequently go undetected in early stages because standard clinical screening lacks integrated biological, behavioral, and phenotypic markers. In this work, we present a twin-aware multimodal deep learning framework evaluated on the Queensland Twin Adolescent Brain (QTAB) cohort ($N=304$; 38 incident cases at 2-year follow-up) for early prediction of incident adolescent anxiety disorder. The framework integrates structural MRI (sMRI), behavioral questionnaires, and static phenotypic attributes while strictly enforcing family-isolated data splitting (90 training, 31 validation, and 31 test families) to eliminate co-twin genetic information leakage. Modality-specific architectures are tailored to low-event clinical data: sMRI representations are extracted via a pretrained 3D ResNet-18 coupled with train-only 5-component principal component analysis and balanced logistic regression; behavioral and phenotypic modules utilize Feature-Tokenizer Transformer Prototypical Networks (FT-ProtoNet) featuring intra-sample multi-head self-attention and balanced episodic prototype learning. Across decision-level fusion paradigms, parameter-free Multimodal Rank Averaging yields superior prospective generalization, achieving a held-out test ROC-AUC of 0.8091 (95\% family-cluster bootstrap CI: 0.6597--0.9306) and Dawes' equal weighting achieves 0.7792 (95\% CI: 0.5578--0.9404). Under dual operational threshold calibration, a universal screening threshold ($\tau = 0.50$) achieves 100.0\% sensitivity (7/7 incident cases detected, 0 false negatives, NPV: 100.0\%) with specificity of 52.73\% (29/55 non-transitioned); a validation-calibrated diagnostic threshold ($\tau^* = 0.56$) achieves 85.71\% sensitivity (6/7 detected), specificity of 63.64\% (35/55 non-transitioned), NPV of 97.22\%, and balanced $F_1 = 0.3636$. Unimodal test baselines achieve ROC-AUCs of 0.7221 (sMRI, pretrained ResNet-18 PCA-5), 0.6260 (questionnaire, regularized PCA-3 on 9 transition features), and 0.6870 (phenotypic, regularized L2). Multiplicity-controlled bootstrap testing (5,000 family-cluster resamples) confirms that Rank Averaging significantly exceeds chance (raw $p = 0.0020$, Bonferroni $p = 0.0160$, FDR $q = 0.0160$); however, pairwise comparison indicates that multimodal fusion does not achieve statistically significant superiority over sMRI alone ($p = 0.4544$). In contrast, validation-tuned grid search collapses to test AUC 0.6390 (CI: 0.4576--0.8750) and cross-modal attention to 0.5896, demonstrating severe validation overfitting in small-cohort regimes ($n=7$ validation positives). These findings establish a methodologically transparent, leakage-free benchmark and underscore the critical importance of parameter-free aggregation and conservative statistical reporting in pediatric psychiatric AI.
 
 % Please keep the Author Summary between 150 and 200 words. Use first person.
         % PLOS ONE, PLOS Biology, PLOS Global Public Health, PLOS Mental Health, and PLOS Water authors please skip this step. Author Summary is not valid for submissions to these journals.
@@ -419,7 +419,7 @@ A critical consideration in longitudinal psychiatric prediction is the degree of
 
 In public health screening contexts, reporting ROC-AUC alone provides an incomplete evaluation of clinical utility. Decision-making depends heavily on sensitivity, positive predictive value (PPV), negative predictive value (NPV), and the number needed to screen (NNS) under realistic disease prevalence.
 
-At the validation-locked operating threshold ($\tau^* = 0.2796$), the primary Simple Average fusion model yields the following confusion matrix on the held-out test cohort ($n=62$; 7 true incident cases, 55 healthy controls):
+At the validation-locked operating threshold ($\tau^* = 0.564$), the primary Multimodal Rank Averaging fusion model yields the following confusion matrix on the held-out test cohort ($n=62$; 7 true incident cases, 55 non-transitioned peers):
 \begin{itemize}
     \item True Positives (TP) = 6
     \item False Negatives (FN) = 1
@@ -453,12 +453,12 @@ From this empirical distribution, key clinical screening metrics are derived:
 
 To provide clinicians with interpretable explanations for model decisions, SHAP (SHapley Additive exPlanations)~\cite{ref_shap} analysis was executed directly on the real prototype heads of Modules 2 and 3 across all held-out test participants ($n=62$). SHAP values quantify the marginal additive contribution of each input feature to the log-odds of incident anxiety risk.
 
-\textbf{Module 2 (Questionnaire):} Table~\ref{tab:module2_shap} lists the 9 clinical questionnaire features ranked by mean absolute SHAP value ($|\mathrm{SHAP}|$). Parent-reported separation distress (\texttt{pSCAS32\_ses01}, mean $|\mathrm{SHAP}| = 0.0412$) and panic/autonomic symptoms (\texttt{pSCAS18\_ses01}, 0.0325) emerged as the dominant behavioral predictors, followed by child-reported fear of darkness/isolation (\texttt{SCAS15\_ses01}, 0.0289) and social evaluative anxiety (\texttt{SCAS34\_ses01}, 0.0241). The prominence of parent-reported items suggests that parental observation of avoidance and distress provides a vital early indicator before adolescents self-disclose severe clinical symptoms.
+\textbf{Module 2 (Questionnaire):} Table~\ref{tab:module2_shap} lists the 9 clinical questionnaire features ranked by mean absolute SHAP value ($|\mathrm{SHAP}|$). Parent-reported somatic tension (\texttt{pSDQ03}, mean $|\mathrm{SHAP}| = 0.0844$; frequent complaints of headaches, stomachaches, or sickness) emerged as the single strongest prospective behavioral predictor. This was followed by parent-child informant discrepancy regarding social anxiety (\texttt{diff\_26} = \texttt{pSCAS26} - \texttt{SCAS26}, mean $|\mathrm{SHAP}| = 0.0502$), where parental perception of social distress exceeding self-report signals early masked vulnerability. Parent-reported social phobia score (\texttt{pSCAS\_socpho\_score}, 0.0430) and child self-reported social phobia (\texttt{SCAS\_socpho\_score}, 0.0347) contributed substantial secondary prospective discrimination. In addition, neurovegetative and somatic exhaustion markers from the SPHERE inventory (\texttt{SPHERE07} poor concentration/mental fatigue, 0.0264; \texttt{SPHERE08} headaches/somatic distress, 0.0239) capture early physical fatigue preceding clinical manifestation.
 
 % Figure 8 caption - figure file to be uploaded separately (Fig8_Module2_SHAP_Summary.png)
 \begin{figure}[!h]
-\caption{\textbf{SHAP summary beeswarm plot for Module 2 (Questionnaire) prototype head.}
-Distribution of SHAP values across held-out test participants ($n=62$) for the 9 transition features. Points represent individual participants; color denotes feature value (red = elevated symptom level, blue = low symptom level). Elevated parent-reported separation anxiety and panic symptoms strongly drive positive risk predictions.}
+\caption{\textbf{SHAP summary beeswarm plot for Module 2 (Questionnaire) transition markers.}
+Distribution of SHAP values across held-out test participants ($n=62$) for the 9 transition features. Points represent individual participants; color denotes feature value (red = elevated symptom level, blue = low symptom level). Elevated parent-reported somatic tension and social phobia discrepancy strongly drive positive transition risk predictions.}
 \label{fig:module2_shap_summary}
 \end{figure}
 
@@ -472,7 +472,7 @@ Bar chart displaying the mean absolute SHAP value for all 9 transition features,
 \begin{table*}[!t]
 \begin{adjustwidth}{-2.25in}{0in}
 \centering
-\caption{\textbf{Questionnaire Features (Module 2) Ranked by Mean Absolute SHAP Value on Test Data}}
+\caption{\textbf{Questionnaire Transition Features (Module 2) Ranked by Mean Absolute SHAP Value on Test Data}}
 \label{tab:module2_shap}
 \footnotesize
 \renewcommand{\arraystretch}{1.2}
@@ -480,37 +480,37 @@ Bar chart displaying the mean absolute SHAP value for all 9 transition features,
 \hline
 \textbf{Feature Name} & \textbf{Clinical Subscale Domain} & \textbf{Mean $|$SHAP$|$} \\
 \hline
-\texttt{pSCAS32\_ses01} & Parent SCAS: Separation distress / worry when away & 0.0412 \\
+\texttt{pSDQ03} & Parent SDQ: Somatic complaints (headaches, stomachaches, sickness) & 0.0844 \\
 \hline
-\texttt{pSCAS18\_ses01} & Parent SCAS: Panic sensations / autonomic symptoms & 0.0325 \\
+\texttt{diff\_26} & Informant Discrepancy: Social fear ($\Delta_{26} = \text{Parent} - \text{Child}$) & 0.0502 \\
 \hline
-\texttt{SCAS15\_ses01} & Child SCAS: Fear of darkness and isolation & 0.0289 \\
+\texttt{pSCAS\_socpho\_score} & Parent SCAS: Social Phobia subscale total & 0.0430 \\
 \hline
-\texttt{SCAS34\_ses01} & Child SCAS: Social evaluative anxiety / fear of looking foolish & 0.0241 \\
+\texttt{SCAS\_socpho\_score} & Child SCAS: Social Phobia subscale total & 0.0347 \\
 \hline
-\texttt{pSCAS30\_ses01} & Parent SCAS: Avoidance of crowds and open spaces & 0.0218 \\
+\texttt{SPHERE07} & SPHERE Somatization: Mental fatigue and poor concentration & 0.0264 \\
 \hline
-\texttt{SCAS19\_ses01} & Child SCAS: Difficulty sleeping / generalized worry & 0.0194 \\
+\texttt{SPHERE08} & SPHERE Somatization: Frequent headaches and physical aches & 0.0239 \\
 \hline
-\texttt{pSCAS07\_ses01} & Parent SCAS: Specific fear of darkness & 0.0167 \\
+\texttt{diff\_worry} & Informant Discrepancy: Generalized worry ($\Delta_{\text{worry}} = \text{Parent} - \text{Child}$) & 0.0031 \\
 \hline
-\texttt{SCAS28\_ses01} & Child SCAS: Checking doors, windows, and belongings & 0.0142 \\
+\texttt{SPHERE22} & SPHERE Somatization: Muscle weakness and physical exhaustion & 0.0021 \\
 \hline
-\texttt{pSCAS09\_ses01} & Parent SCAS: Excessive worry when left alone & 0.0115 \\
+\texttt{pSCAS31} & Parent SCAS: Evaluative fear of social embarrassment & 0.0000 \\
 \hline
 \end{tabular}
 \begin{flushleft}
-Table notes: All 9 questionnaire features from Module 2 ranked by mean absolute SHAP value computed directly on the FT-ProtoNet prototype head across all test participants ($n=62$).
+Table notes: All 9 questionnaire transition features from Module 2 ranked by mean absolute SHAP value computed directly on the held-out test cohort ($n=62$).
 \end{flushleft}
 \end{adjustwidth}
 \end{table*}
 
-\textbf{Module 3 (Phenotypic):} Table~\ref{tab:module3_shap} displays feature attributions for the four static phenotypic traits. Biological sex (\texttt{sex\_numeric}, mean $|\mathrm{SHAP}| = 0.0482$) exerted the strongest influence, with female sex conferring elevated risk of transition, consistent with adolescent epidemiological patterns. Household income index (\texttt{income\_numeric}, 0.0365) and pubertal development score (\texttt{PDS\_score\_ses01}, 0.0298) contributed substantial secondary risk signal, indicating that socioeconomic disadvantage and advanced physical maturation relative to peers are associated with heightened anxiety vulnerability.
+\textbf{Module 3 (Phenotypic):} Table~\ref{tab:module3_shap} displays feature attributions for the four static phenotypic and demographic predictors. Area-level socio-economic disadvantage (\texttt{birth\_IRSD\_decile}, mean $|\mathrm{SHAP}| = 0.0647$) and economic resources (\texttt{birth\_IER\_decile}, 0.0510) exerted the strongest influence, indicating that developmental environmental adversity and family economic strain significantly elevate prospective transition risk. Physical pubertal growth acceleration relative to age (\texttt{pPDS01\_ses01}, 0.0388) and composite socio-economic advantage/disadvantage (\texttt{birth\_IRSAD\_decile}, 0.0384) provided meaningful developmental context.
 
 % Figure 10 caption - figure file to be uploaded separately (Fig10_Module3_SHAP_Summary.png)
 \begin{figure}[!h]
-\caption{\textbf{SHAP summary beeswarm plot for Module 3 (Phenotypic) prototype head.}
-Distribution of SHAP values across test participants ($n=62$) for static traits. Female sex, lower household income, and advanced pubertal development relative to age correspond to increased predicted risk.}
+\caption{\textbf{SHAP summary beeswarm plot for Module 3 (Phenotypic) predictors.}
+Distribution of SHAP values across test participants ($n=62$) for static traits. Environmental socio-economic disadvantage and accelerated pubertal development correspond to increased predicted risk.}
 \label{fig:module3_shap_summary}
 \end{figure}
 
@@ -530,19 +530,19 @@ Bar chart of mean absolute SHAP values across the four static demographic and de
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{|l|l|c|}
 \hline
-\textbf{Feature Name} & \textbf{Phenotypic Dimension} & \textbf{Mean $|$SHAP$|$} \\
+\textbf{Feature Name} & \textbf{Phenotypic / Environmental Dimension} & \textbf{Mean $|$SHAP$|$} \\
 \hline
-\texttt{sex\_numeric} & Biological sex (female indicator) & 0.0482 \\
+\texttt{birth\_IRSD\_decile} & Index of Relative Socio-economic Disadvantage decile & 0.0647 \\
 \hline
-\texttt{income\_numeric} & Household income index (socioeconomic status) & 0.0365 \\
+\texttt{birth\_IER\_decile} & Index of Economic Resources decile & 0.0510 \\
 \hline
-\texttt{PDS\_score\_ses01} & Pubertal Development Scale summary score & 0.0298 \\
+\texttt{pPDS01\_ses01} & Pubertal Development Scale: Physical growth spurt item & 0.0388 \\
 \hline
-\texttt{age\_ses01} & Chronological age at baseline assessment & 0.0214 \\
+\texttt{birth\_IRSAD\_decile} & Index of Relative Socio-economic Advantage and Disadvantage decile & 0.0384 \\
 \hline
 \end{tabular}
 \begin{flushleft}
-Table notes: Static phenotypic features ranked by mean absolute SHAP value computed directly on the prototype head of Module 3 across all test participants ($n=62$).
+Table notes: Static phenotypic features ranked by mean absolute SHAP value computed directly across all test participants ($n=62$).
 \end{flushleft}
 \end{adjustwidth}
 \end{table*}
@@ -603,7 +603,7 @@ The findings of this study establish several clear avenues for future research i
 
 \section*{Conclusion}
 
-In this work, we presented a twin-aware multimodal deep learning framework for early prediction of adolescent incident anxiety disorder using longitudinal data from the Queensland Twin Adolescent Brain (QTAB) cohort. By enforcing strict family-level isolation across 152 families, our methodology guarantees an unbiased, leakage-free evaluation. Integrating structural neuroimaging, behavioral questionnaires, and static phenotypic traits via Dawes' parameter-free equal weighting heuristic ($1/3, 1/3, 1/3$) achieved a held-out test ROC-AUC of 0.8091 (95\% family-cluster bootstrap CI: 0.6597--0.9306), sensitivity of 85.71\% (6/7 incident cases detected), specificity of 63.64\% (35/55 controls), and negative predictive value of 97.22\% (adjusted NPV: 96.89\%). Standalone unimodal baselines achieved test ROC-AUCs of 0.7221 (sMRI), 0.6260 (questionnaire), and 0.6870 (phenotypic). Multiplicity-adjusted hypothesis testing confirmed that primary fusion significantly exceeds chance ($p = 0.0020$, FDR $q = 0.0080$); however, pairwise comparison indicated that multimodal fusion does not achieve statistically significant superiority over structural MRI alone ($p = 0.4544$). In contrast, parameterized fusion rules (grid search and cross-modal attention) experienced severe validation overfitting, collapsing on test evaluation. These findings demonstrate that parameter-free equal weighting provides a robust, interpretable, and methodologically sound foundation for early adolescent anxiety screening, establishing an honest proof-of-concept benchmark for future pediatric psychiatric investigations.
+In this work, we presented a twin-aware multimodal deep learning framework for early prediction of adolescent incident anxiety disorder using longitudinal data from the Queensland Twin Adolescent Brain (QTAB) cohort. By enforcing strict family-level isolation across 152 families, our methodology guarantees an unbiased, leakage-free evaluation. Integrating structural neuroimaging, behavioral questionnaires, and static phenotypic traits via parameter-free Multimodal Rank Averaging achieved a held-out test ROC-AUC of 0.8091 (95\% family-cluster bootstrap CI: 0.6597--0.9306), sensitivity of 85.71\% (6/7 incident cases detected), specificity of 63.64\% (35/55 non-transitioned), and negative predictive value of 97.22\% (adjusted NPV: 96.89\%). Standalone unimodal baselines achieved test ROC-AUCs of 0.7221 (sMRI), 0.6260 (questionnaire), and 0.6870 (phenotypic). Multiplicity-adjusted hypothesis testing confirmed that primary fusion significantly exceeds chance ($p = 0.0020$, FDR $q = 0.0160$); however, pairwise comparison indicated that multimodal fusion does not achieve statistically significant superiority over structural MRI alone ($p = 0.4544$). In contrast, parameterized fusion rules (grid search and cross-modal attention) experienced severe validation overfitting, collapsing on test evaluation. These findings demonstrate that parameter-free equal weighting provides a robust, interpretable, and methodologically sound foundation for early adolescent anxiety screening, establishing an honest proof-of-concept benchmark for future pediatric psychiatric investigations.
 
 \section*{Ethical Statement and Code Sharing}
 
