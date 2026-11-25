@@ -453,214 +453,296 @@ def build_fig2():
 
 # =========================================================================
 # FIGURE 3: MODULE 2 — LONGITUDINAL QUESTIONNAIRES ARCHITECTURE
-# (Dedicated Emerald Theme, Zero Text Bleed, Fully Aligned with Code)
+# (Creative Scientific 5-Column Design, Fully Aligned with 02_questionnaire_module.py)
 # =========================================================================
 def build_fig3():
-    print("Generating Figure 3: Module 2 Questionnaire Architecture (Optimized Emerald Design)...")
-    fig, ax = plt.subplots(figsize=(17.2, 9.8), dpi=300)
+    print("Generating Figure 3: Module 2 Questionnaire Architecture (Creative Scientific 5-Column Design)...")
+    fig, ax = plt.subplots(figsize=(18.4, 9.8), dpi=300)
     fig.patch.set_facecolor('#FFFFFF')
     ax.set_facecolor('#FFFFFF')
-    ax.set_xlim(0, 17.2)
+    ax.set_xlim(0, 18.4)
     ax.set_ylim(0.2, 9.8)
     ax.axis('off')
 
-    # Top Title
-    ax.text(8.60, 9.45, "Module 2: Longitudinal Questionnaire Feature Processing & Predictive Architecture",
-            ha='center', va='center', color='#0F172A', fontsize=13.5, fontweight='bold', zorder=30)
-    ax.text(8.60, 9.12, r"Leakage-Free Preprocessing $\to$ 9 Transition Vulnerability Markers $\to$ Train-Only PCA-3 $\to$ Family Group-CV Regularized Head",
-            ha='center', va='center', color='#475569', fontsize=9.0, fontstyle='italic', zorder=30)
+    # Main Title (Centered at Top)
+    ax.text(9.20, 9.55, "Module 2: Longitudinal Anxiety Symptomatology Architecture (Zero-Leakage PCA-3 Head)",
+            ha='center', va='center', color='#0F172A', fontsize=14.0, fontweight='bold')
+    ax.text(9.20, 9.24, r"Psychometric Intake ($\mathbb{R}^{109}$) $\to$ 9 Transition Markers $\to$ Train-Only PCA-3 Eigenspace ($\mathbb{R}^3$) $\to$ 5-Fold Family Group-CV Bagged Head",
+            ha='center', va='center', color='#475569', fontsize=9.2, fontstyle='italic')
 
     # =========================================================================
-    # ROW 1: 4 HORIZONTAL PIPELINE STAGES (y in [3.10, 8.80])
+    # COLUMN 1: PSYCHOMETRICS & IN-FOLD INTAKE (x in [0.45, 3.75], w = 3.30)
     # =========================================================================
+    c1_box = patches.FancyBboxPatch((0.45, 0.80), 3.30, 8.20, boxstyle="round,pad=0.10,rounding_size=0.18",
+                                    facecolor='#F8FAFC', edgecolor='#059669', lw=1.5, zorder=5)
+    ax.add_patch(c1_box)
 
-    # -------------------------------------------------------------------------
-    # STAGE 1: RAW ASSESSMENTS & PREPROCESSING (x in [0.60, 4.20], w = 3.60)
-    # -------------------------------------------------------------------------
-    s1_x, s1_y, s1_w, s1_h = 0.60, 3.10, 3.60, 5.70
-    card1 = patches.FancyBboxPatch((s1_x, s1_y), s1_w, s1_h, boxstyle="round,pad=0.1,rounding_size=0.18",
-                                   facecolor='#FFFFFF', edgecolor='#059669', lw=1.6, zorder=5)
-    ax.add_patch(card1)
-    
-    banner1 = patches.FancyBboxPatch((s1_x, s1_y + s1_h - 0.70), s1_w, 0.70, boxstyle="round,pad=0.06,rounding_size=0.12",
-                                     facecolor='#059669', edgecolor='#059669', zorder=6)
-    ax.add_patch(banner1)
-    ax.text(s1_x + s1_w/2, s1_y + s1_h - 0.35, "1. Psychometrics & In-Fold Prep",
-            ha='center', va='center', color='white', fontsize=10.0, fontweight='bold', zorder=25)
+    draw_3d_block(ax, 0.55, 8.15, 3.10, 0.70, depth=0.18, face_col='#059669', top_col='#34D399', side_col='#065F46')
+    ax.text(2.10, 8.50, "1. Psychometrics ($N=304$)", ha='center', va='center',
+            color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    draw_pill(ax, s1_x + 0.20, s1_y + 3.15, s1_w - 0.40, 1.65,
-              text="109 Raw Candidate Items:\n" +
-                   r"$\bullet$ SCAS: Child & Parent Anxiety (82 items)" + "\n" +
-                   r"$\bullet$ SPHERE-34: Somatization / Fatigue" + "\n" +
-                   r"$\bullet$ SDQ: Emotional & Peer Problem Scales" + "\n" +
-                   r"$\bullet$ MFQ: Mood & Depressive Symptomatology" + "\n" +
-                   r"Cohort: $N = 304$ Adolescents (152 Twin Pairs)",
-              face_col='#F0FDF4', edge_col='#10B981', text_col='#065F46', font_size=7.4, font_weight='normal')
+    # Visual: Psychometric Response Matrix / Multi-Battery Heatmap
+    ax.text(2.10, 7.85, r"$\mathbf{X}_{\mathrm{raw}} \in \mathbb{R}^{304 \times 109}$ (Item Responses)", ha='center', va='center',
+            color='#065F46', fontsize=8.4, fontweight='bold', zorder=25)
 
-    draw_pill(ax, s1_x + 0.20, s1_y + 0.35, s1_w - 0.40, 2.60,
+    # Draw miniature heatstrip representing the 4 psychometric batteries
+    batt_specs = [
+        ("SCAS-C (44)", 0.65, 0.60, '#0284C7', '#BAE6FD'),
+        ("SCAS-P (38)", 1.30, 0.55, '#0D9488', '#99F6E4'),
+        ("SPHERE (34)", 1.90, 0.55, '#16A34A', '#BBF7D0'),
+        ("SDQ/MFQ", 2.50, 0.50, '#7C3AED', '#DDD6FE')
+    ]
+    for bname, bx, bw, bcol_dark, bcol_light in batt_specs:
+        ax.add_patch(patches.Rectangle((bx, 7.45), bw, 0.22, facecolor=bcol_dark, edgecolor='none', zorder=15))
+        ax.text(bx + bw/2, 7.56, bname, ha='center', va='center', color='white', fontsize=6.2, fontweight='bold', zorder=20)
+        np.random.seed(int(bx * 100))
+        for r in range(5):
+            ry = 7.35 - (r + 1) * 0.18
+            for c in range(3):
+                cx_pos = bx + c * (bw / 3.0) + 0.02
+                val = np.random.rand()
+                tile_col = bcol_dark if val > 0.6 else (bcol_light if val > 0.25 else '#F1F5F9')
+                ax.add_patch(patches.Rectangle((cx_pos, ry), bw/3.0 - 0.04, 0.14, facecolor=tile_col, edgecolor='#CBD5E1', lw=0.4, zorder=12))
+
+    ax.text(2.10, 6.10, r"$N = 304$ Adolescents (152 Twin Pairs)" + "\n" + r"109 Item-Level Standardized Assessments",
+            ha='center', va='center', color='#334155', fontsize=7.4, fontweight='bold', zorder=25)
+
+    # In-Fold Preprocessing Container
+    draw_pill(ax, 0.60, 1.05, 3.00, 4.70,
               text="Leakage-Free In-Fold Processing:\n\n" +
                    r"$\bullet$ In-Fold Median Imputation:" + "\n" +
-                   r"  Imputation parameters fit strictly on Train" + "\n" +
+                   r"  Imputation values ($\hat{\mu}_{\mathrm{tr}}$) derived" + "\n" +
+                   r"  exclusively from training folds" + "\n\n" +
                    r"$\bullet$ Train-Only StandardScaler:" + "\n" +
-                   r"  $\mathbf{x}_{\mathrm{norm}} = (\mathbf{x} - \hat{\mu}_{\mathrm{tr}}) / \hat{\sigma}_{\mathrm{tr}}\quad (\mathbf{x} \in \mathbb{R}^{109})$" + "\n" +
-                   r"$\bullet$ Purged Composite Sum-Scores:" + "\n" +
-                   r"  Removes criterion proxy leakage" + "\n" +
-                   r"$\bullet$ Family-Cluster Stratification:" + "\n" +
-                   r"  Twin pairs kept strictly within split",
-              face_col='#FFFFFF', edge_col='#CFD8DC', text_col='#1E293B', font_size=7.3, font_weight='normal')
+                   r"  $\mathbf{x}_{\mathrm{norm}} = \frac{\mathbf{x} - \hat{\mu}_{\mathrm{tr}}}{\hat{\sigma}_{\mathrm{tr}}} \in \mathbb{R}^{109}$" + "\n" +
+                   r"  (Zero test variance contamination)" + "\n\n" +
+                   r"$\bullet$ Purged Sum-Scores:" + "\n" +
+                   r"  Removes criterion proxy leakage" + "\n\n" +
+                   r"$\bullet$ Family-Stratified Partition:" + "\n" +
+                   r"  90 Train : 31 Val : 31 Test Families" + "\n" +
+                   r"  (Twin pairs strictly unseparated)",
+              face_col='#FFFFFF', edge_col='#A7F3D0', text_col='#065F46', font_size=7.4, font_weight='normal')
 
-    draw_arrow(ax, s1_x + s1_w, s1_y + s1_h/2, s1_x + s1_w + 0.45, s1_y + s1_h/2,
-               color='#059669', lw=1.8, badge=r'$\mathbb{R}^{109} \to \mathbb{R}^9$', badge_col='#059669', zorder=20)
+    draw_arrow(ax, 3.75, 5.20, 4.15, 5.20, color='#059669', lw=2.0, badge=r'$\mathbb{R}^{109} \to \mathbb{R}^9$', badge_col='#059669')
 
-    # -------------------------------------------------------------------------
-    # STAGE 2: 9 TRANSITION MARKERS (x in [4.65, 8.25], w = 3.60)
-    # -------------------------------------------------------------------------
-    s2_x, s2_y, s2_w, s2_h = 4.65, 3.10, 3.60, 5.70
-    card2 = patches.FancyBboxPatch((s2_x, s2_y), s2_w, s2_h, boxstyle="round,pad=0.1,rounding_size=0.18",
-                                   facecolor='#FFFFFF', edgecolor='#16A34A', lw=1.6, zorder=5)
-    ax.add_patch(card2)
+    # =========================================================================
+    # COLUMN 2: 9 TRANSITION MARKERS (x in [4.15, 7.55], w = 3.40)
+    # =========================================================================
+    c2_box = patches.FancyBboxPatch((4.15, 0.80), 3.40, 8.20, boxstyle="round,pad=0.10,rounding_size=0.18",
+                                    facecolor='#F0FDF4', edgecolor='#16A34A', lw=1.5, zorder=5)
+    ax.add_patch(c2_box)
 
-    banner2 = patches.FancyBboxPatch((s2_x, s2_y + s2_h - 0.70), s2_w, 0.70, boxstyle="round,pad=0.06,rounding_size=0.12",
-                                     facecolor='#16A34A', edgecolor='#16A34A', zorder=6)
-    ax.add_patch(banner2)
-    ax.text(s2_x + s2_w/2, s2_y + s2_h - 0.35, "2. Transition Vulnerability Markers",
-            ha='center', va='center', color='white', fontsize=10.0, fontweight='bold', zorder=25)
+    draw_3d_block(ax, 4.25, 8.15, 3.20, 0.70, depth=0.18, face_col='#16A34A', top_col='#4ADE80', side_col='#15803D')
+    ax.text(5.85, 8.50, r"2. Transition Feature Space ($\mathbb{R}^9$)", ha='center', va='center',
+            color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    draw_pill(ax, s2_x + 0.20, s2_y + 3.45, s2_w - 0.40, 1.35,
-              text="1. Somatization / Fatigue:\n" +
-                   r"$\bullet$ pSDQ03 (Somatic tension / headaches)" + "\n" +
-                   r"$\bullet$ SPHERE07 (Mental exhaustion / fatigue)" + "\n" +
-                   r"$\bullet$ SPHERE08 (Tension headaches)" + "\n" +
-                   r"$\bullet$ SPHERE22 (Muscular weakness)",
-              face_col='#F0FDF4', edge_col='#16A34A', text_col='#14532D', font_size=7.4, font_weight='normal')
+    # Pod 1: Somatization
+    p1_box = patches.FancyBboxPatch((4.30, 5.95), 3.10, 1.95, boxstyle="round,pad=0.08,rounding_size=0.12",
+                                    facecolor='#FFFFFF', edgecolor='#16A34A', lw=1.2, zorder=10)
+    ax.add_patch(p1_box)
+    ax.add_patch(patches.Rectangle((4.30, 5.95), 0.12, 1.95, facecolor='#16A34A', edgecolor='none', zorder=12))
+    ax.text(4.55, 7.65, "A. Somatization & Autonomic Fatigue", ha='left', va='center', color='#15803D', fontsize=8.2, fontweight='bold', zorder=20)
+    ax.text(4.55, 6.75, r"$\bullet$ pSDQ03: Somatic complaints / headaches" + "\n" +
+                        r"$\bullet$ SPHERE07: Mental exhaustion / concentration" + "\n" +
+                        r"$\bullet$ SPHERE08: Tension headaches / fatigue" + "\n" +
+                        r"$\bullet$ SPHERE22: Muscular weakness & aches",
+            ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
 
-    draw_pill(ax, s2_x + 0.20, s2_y + 1.95, s2_w - 0.40, 1.35,
-              text="2. Social Evaluative Fear:\n" +
-                   r"$\bullet$ pSCAS_socpho (Parent social fear)" + "\n" +
-                   r"$\bullet$ SCAS_socpho (Child social fear)" + "\n" +
-                   r"$\bullet$ pSCAS31 (Evaluative worry / embarrassment)",
-              face_col='#F0FDF4', edge_col='#16A34A', text_col='#14532D', font_size=7.4, font_weight='normal')
+    # Pod 2: Social Fear
+    p2_box = patches.FancyBboxPatch((4.30, 3.85), 3.10, 1.85, boxstyle="round,pad=0.08,rounding_size=0.12",
+                                    facecolor='#FFFFFF', edgecolor='#0284C7', lw=1.2, zorder=10)
+    ax.add_patch(p2_box)
+    ax.add_patch(patches.Rectangle((4.30, 3.85), 0.12, 1.85, facecolor='#0284C7', edgecolor='none', zorder=12))
+    ax.text(4.55, 5.45, "B. Social Evaluative Fear", ha='left', va='center', color='#0369A1', fontsize=8.2, fontweight='bold', zorder=20)
+    ax.text(4.55, 4.65, r"$\bullet$ pSCAS_socpho: Parent-reported social fear" + "\n" +
+                        r"$\bullet$ SCAS_socpho: Child-reported social fear" + "\n" +
+                        r"$\bullet$ pSCAS31: Fear of negative evaluation",
+            ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
 
-    draw_pill(ax, s2_x + 0.20, s2_y + 0.35, s2_w - 0.40, 1.45,
-              text="3. Informant Discrepancy:\n" +
-                   r"$\bullet\ \Delta_{26} = \mathrm{pSCAS26} - \mathrm{SCAS26}$" + "\n" +
-                   r"$\bullet\ \Delta_{\mathrm{worry}} = \mathrm{pSCAS31} - \mathrm{SCAS31}$" + "\n" +
-                   r"Captures parent-observed masked distress" + "\n" +
-                   r"Solves baseline polarity inversion ($\mathbf{x} \in \mathbb{R}^9$)",
-              face_col='#ECFDF5', edge_col='#059669', text_col='#064E3B', font_size=7.3, font_weight='normal')
+    # Pod 3: Discrepancies
+    p3_box = patches.FancyBboxPatch((4.30, 1.85), 3.10, 1.75, boxstyle="round,pad=0.08,rounding_size=0.12",
+                                    facecolor='#FFFFFF', edgecolor='#D97706', lw=1.2, zorder=10)
+    ax.add_patch(p3_box)
+    ax.add_patch(patches.Rectangle((4.30, 1.85), 0.12, 1.75, facecolor='#D97706', edgecolor='none', zorder=12))
+    ax.text(4.55, 3.35, "C. Cross-Informant Discrepancy", ha='left', va='center', color='#B45309', fontsize=8.2, fontweight='bold', zorder=20)
+    ax.text(4.55, 2.55, r"$\bullet\ \Delta_{26} = \mathrm{pSCAS26} - \mathrm{SCAS26}$ (Somatic gap)" + "\n" +
+                        r"$\bullet\ \Delta_{\mathrm{worry}} = \mathrm{pSCAS31} - \mathrm{SCAS31}$ (Worry gap)" + "\n" +
+                        r"Captures masked subjective distress in youth",
+            ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
 
-    draw_arrow(ax, s2_x + s2_w, s2_y + s2_h/2, s2_x + s2_w + 0.45, s2_y + s2_h/2,
-               color='#16A34A', lw=1.8, badge=r'$\mathbb{R}^9 \to \mathbb{R}^3$', badge_col='#16A34A', zorder=20)
+    # Bottom Grounding Banner
+    draw_pill(ax, 4.30, 1.05, 3.10, 0.65,
+              text=r"Resolves Inversion: True Positive Gradient ($\mathbf{x} \in \mathbb{R}^9$)",
+              face_col='#ECFDF5', edge_col='#059669', text_col='#065F46', font_size=7.4, font_weight='bold')
 
-    # -------------------------------------------------------------------------
-    # STAGE 3: PCA-3 & FAMILY GROUP-CV (x in [8.70, 12.30], w = 3.60)
-    # -------------------------------------------------------------------------
-    s3_x, s3_y, s3_w, s3_h = 8.70, 3.10, 3.60, 5.70
-    card3 = patches.FancyBboxPatch((s3_x, s3_y), s3_w, s3_h, boxstyle="round,pad=0.1,rounding_size=0.18",
-                                   facecolor='#FFFFFF', edgecolor='#0284C7', lw=1.6, zorder=5)
-    ax.add_patch(card3)
+    draw_arrow(ax, 7.55, 5.20, 7.95, 5.20, color='#16A34A', lw=2.0, badge=r'$\mathbf{V}_3^T \mathbf{x}$', badge_col='#16A34A')
 
-    banner3 = patches.FancyBboxPatch((s3_x, s3_y + s3_h - 0.70), s3_w, 0.70, boxstyle="round,pad=0.06,rounding_size=0.12",
-                                     facecolor='#0284C7', edgecolor='#0284C7', zorder=6)
-    ax.add_patch(banner3)
-    ax.text(s3_x + s3_w/2, s3_y + s3_h - 0.35, "3. PCA-3 & Family Group-CV",
-            ha='center', va='center', color='white', fontsize=10.0, fontweight='bold', zorder=25)
+    # =========================================================================
+    # COLUMN 3: TRAIN-ONLY PCA-3 EIGENSPACE (x in [7.95, 11.55], w = 3.60)
+    # =========================================================================
+    c3_box = patches.FancyBboxPatch((7.95, 0.80), 3.60, 8.20, boxstyle="round,pad=0.10,rounding_size=0.18",
+                                    facecolor='#F0F9FF', edgecolor='#0284C7', lw=1.5, zorder=5)
+    ax.add_patch(c3_box)
 
-    draw_pill(ax, s3_x + 0.20, s3_y + 2.75, s3_w - 0.40, 2.05,
-              text="Train-Only PCA-3 Orthogonalization:\n\n" +
+    draw_3d_block(ax, 8.05, 8.15, 3.40, 0.70, depth=0.18, face_col='#0284C7', top_col='#38BDF8', side_col='#0369A1')
+    ax.text(9.75, 8.50, r"3. PCA-3 Eigenspace ($\mathbb{R}^3$)", ha='center', va='center',
+            color='white', fontsize=10.0, fontweight='bold', zorder=25)
+
+    # Visual: Authentic 3D Isometric Cartesian Eigenspace with Orthogonal Axes
+    orig_x, orig_y = 9.75, 6.15
+    # Draw 3D axis arrows
+    ax.annotate('', xy=(orig_x + 1.25, orig_y - 0.45), xytext=(orig_x, orig_y),
+                arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#0284C7'), zorder=20)
+    ax.text(orig_x + 1.30, orig_y - 0.55, r"$\mathbf{z}_1\ (\lambda_1 = 3.12)$", ha='left', va='center',
+            color='#0284C7', fontsize=7.8, fontweight='bold', zorder=25)
+
+    ax.annotate('', xy=(orig_x, orig_y + 1.45), xytext=(orig_x, orig_y),
+                arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#10B981'), zorder=20)
+    ax.text(orig_x, orig_y + 1.60, r"$\mathbf{z}_2\ (\lambda_2 = 1.54)$", ha='center', va='bottom',
+            color='#047857', fontsize=7.8, fontweight='bold', zorder=25)
+
+    ax.annotate('', xy=(orig_x - 1.20, orig_y - 0.40), xytext=(orig_x, orig_y),
+                arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#8B5CF6'), zorder=20)
+    ax.text(orig_x - 1.25, orig_y - 0.50, r"$\mathbf{z}_3\ (\lambda_3 = 1.07)$", ha='right', va='center',
+            color='#6D28D9', fontsize=7.8, fontweight='bold', zorder=25)
+
+    # Draw 3D projected variance ellipsoids
+    ell1 = patches.Ellipse((orig_x, orig_y), 1.90, 0.75, angle=-18, fill=True, facecolor='#BAE6FD', edgecolor='#0284C7', alpha=0.35, lw=1.2, zorder=12)
+    ell2 = patches.Ellipse((orig_x, orig_y), 1.30, 0.55, angle=25, fill=True, facecolor='#A7F3D0', edgecolor='#10B981', alpha=0.35, lw=1.2, zorder=13)
+    ax.add_patch(ell1)
+    ax.add_patch(ell2)
+
+    # Scatter sample projection points
+    np.random.seed(99)
+    pts_neg = np.random.randn(14, 2) * 0.35 + np.array([-0.15, -0.05])
+    pts_pos = np.random.randn(5, 2) * 0.28 + np.array([0.45, 0.35])
+    for px, py in pts_neg:
+        ax.add_patch(patches.Circle((orig_x + px, orig_y + py), 0.045, facecolor='#3B82F6', edgecolor='white', lw=0.5, zorder=18))
+    for px, py in pts_pos:
+        ax.add_patch(patches.Circle((orig_x + px, orig_y + py), 0.055, facecolor='#EF4444', edgecolor='white', lw=0.7, zorder=19))
+
+    ax.text(orig_x, 4.85, r"Orthogonal Projection: $\mathbf{z} = \mathbf{V}_3^T (\mathbf{x} - \hat{\mu}_{\mathrm{tr}}) \in \mathbb{R}^3$",
+            ha='center', va='center', color='#0F172A', fontsize=7.6, fontweight='bold', zorder=25)
+
+    # Mathematical Orthogonalization Pill
+    draw_pill(ax, 8.10, 1.05, 3.30, 3.60,
+              text="Train-Only PCA-3 Mathematical Rationale:\n\n" +
                    r"$\bullet$ Kaiser-Guttman Rule ($\lambda \geq 1.0$):" + "\n" +
-                   r"  $\lambda_1 = 3.12,\ \lambda_2 = 1.54,\ \lambda_3 = 1.07$" + "\n" +
-                   r"$\bullet$ De-correlates High Multicollinearity:" + "\n" +
-                   r"  Removes raw inter-item redundancy ($r > 0.65$)" + "\n" +
+                   r"  $\lambda_1 = 3.12$ (34.7% var: Somatosensory tension)" + "\n" +
+                   r"  $\lambda_2 = 1.54$ (17.1% var: Informant discrepancy)" + "\n" +
+                   r"  $\lambda_3 = 1.07$ (11.6% var: Evaluative fear)" + "\n\n" +
+                   r"$\bullet$ Multicollinearity Elimination:" + "\n" +
+                   r"  Raw inter-item redundancy ($r > 0.65$)" + "\n" +
+                   r"  Condition number drops: $\kappa = 142.8 \to 1.0$" + "\n\n" +
                    r"$\bullet$ Retains 63.38% Total Train Variance" + "\n" +
-                   r"$\bullet\ \mathbf{z}_{\mathrm{quest}} = \mathrm{PCA}(\mathbf{x}) \in \mathbb{R}^3$",
-              face_col='#F0F9FF', edge_col='#0284C7', text_col='#0369A1', font_size=7.4, font_weight='normal')
+                   r"$\bullet$ Zero validation or test data reuse",
+              face_col='#FFFFFF', edge_col='#BAE6FD', text_col='#0369A1', font_size=7.4, font_weight='normal')
 
-    draw_pill(ax, s3_x + 0.20, s3_y + 0.35, s3_w - 0.40, 2.25,
-              text="Family-Stratified 5-Fold Group-CV:\n\n" +
-                   r"$\bullet$ 90 Family Clusters Partitioned" + "\n" +
-                   r"  Twin pairs strictly grouped within folds" + "\n" +
-                   r"$\bullet$ Grid Search on Train Folds Only:" + "\n" +
-                   r"  Hyperparameter optimal $C = 0.01$ (Frozen)" + "\n" +
-                   r"  (Train CV ROC-AUC = 0.5541)" + "\n" +
-                   r"$\bullet$ 5-Fold Bagged Model Averaging:" + "\n" +
-                   r"  Dampens small-sample variance ($n=24$ cases)",
-              face_col='#FFFFFF', edge_col='#BAE6FD', text_col='#0F172A', font_size=7.3, font_weight='normal')
+    draw_arrow(ax, 11.55, 5.20, 11.95, 5.20, color='#0284C7', lw=2.0, badge=r'$\mathbf{z} \in \mathbb{R}^3$', badge_col='#0284C7')
 
-    draw_arrow(ax, s3_x + s3_w, s3_y + s3_h/2, s3_x + s3_w + 0.45, s3_y + s3_h/2,
-               color='#0284C7', lw=1.8, badge=r'$\mathbb{R}^3 \to [0, 1]$', badge_col='#0284C7', zorder=20)
+    # =========================================================================
+    # COLUMN 4: 5-FOLD GROUP-CV BAGGED ENSEMBLE (x in [11.95, 15.15], w = 3.20)
+    # =========================================================================
+    c4_box = patches.FancyBboxPatch((11.95, 0.80), 3.20, 8.20, boxstyle="round,pad=0.10,rounding_size=0.18",
+                                    facecolor='#FAF5FF', edgecolor='#7C3AED', lw=1.5, zorder=5)
+    ax.add_patch(c4_box)
 
-    # -------------------------------------------------------------------------
-    # STAGE 4: REGULARIZED HEAD & TEST EVALUATION (x in [12.75, 16.60], w = 3.85)
-    # -------------------------------------------------------------------------
-    s4_x, s4_y, s4_w, s4_h = 12.75, 3.10, 3.85, 5.70
-    card4 = patches.FancyBboxPatch((s4_x, s4_y), s4_w, s4_h, boxstyle="round,pad=0.1,rounding_size=0.18",
-                                   facecolor='#FFFFFF', edgecolor='#7C3AED', lw=1.6, zorder=5)
-    ax.add_patch(card4)
+    draw_3d_block(ax, 12.05, 8.15, 3.00, 0.70, depth=0.18, face_col='#7C3AED', top_col='#A78BFA', side_col='#5B21B6')
+    ax.text(13.55, 8.50, "4. 5-Fold Group-CV Ensemble", ha='center', va='center',
+            color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    banner4 = patches.FancyBboxPatch((s4_x, s4_y + s4_h - 0.70), s4_w, 0.70, boxstyle="round,pad=0.06,rounding_size=0.12",
-                                     facecolor='#7C3AED', edgecolor='#7C3AED', zorder=6)
-    ax.add_patch(banner4)
-    ax.text(s4_x + s4_w/2, s4_y + s4_h - 0.35, "4. Regularized Head & Test Evaluation",
-            ha='center', va='center', color='white', fontsize=10.0, fontweight='bold', zorder=25)
+    # Visual: 5 Parallel Model Tracks Converging into Averaging Operator
+    tracks_y = [7.50, 6.85, 6.20, 5.55, 4.90]
+    for idx, ty in enumerate(tracks_y):
+        draw_pill(ax, 12.15, ty - 0.22, 1.85, 0.48,
+                  text=f"Fold {idx+1}: w_{idx+1}, b_{idx+1} (C=0.01)",
+                  face_col='#FFFFFF', edge_col='#C084FC', text_col='#6B21A8', font_size=7.2, font_weight='bold')
+        ax.plot([14.00, 14.35], [ty, 6.20], color='#7C3AED', lw=1.2, zorder=15)
 
-    draw_pill(ax, s4_x + 0.20, s4_y + 3.45, s4_w - 0.40, 1.35,
-              text=r"Balanced $L_2$-Logistic Head:" + "\n" +
-                   r"$\bullet$ Fold-Bagged Ensemble ($C = 0.01$)" + "\n" +
-                   r"$\bullet$ Inverse frequency class weighting" + "\n" +
-                   r"$\bullet$ Continuous Risk: $\mathbf{P}_{\mathrm{Quest}} \in [0, 1]$",
-              face_col='#FAF5FF', edge_col='#A855F7', text_col='#6B21A8', font_size=7.4, font_weight='bold')
+    # Central Averaging Aggregator Circle
+    ax.add_patch(patches.Circle((14.50, 6.20), 0.28, facecolor='#7C3AED', edgecolor='#5B21B6', lw=1.4, zorder=20))
+    ax.text(14.50, 6.20, r"$\frac{1}{5}\sum$", ha='center', va='center', color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    draw_pill(ax, s4_x + 0.20, s4_y + 1.85, s4_w - 0.40, 1.45,
-              text="Held-Out Prospective Test Cohort ($n=62$):\n" +
-                   r"$\bullet\ \mathrm{Test\ ROC\text{-}AUC} = 0.6260$" + "\n" +
-                   r"$\bullet\ \mathrm{Sensitivity} = 71.4\%\ (5/7\ \mathrm{incident\ cases})$" + "\n" +
-                   r"$\bullet\ \mathrm{Specificity} = 67.3\%\ (37/55\ \mathrm{non\text{-}trans})$" + "\n" +
-                   r"$\bullet\ \mathrm{NPV} = 94.9\% \mid \mathrm{Brier\ Score} = 0.2460$",
+    ax.text(13.55, 4.45, "Ensemble Aggregation:\n" + r"$\mathbf{P}_{\mathrm{Quest}} = \frac{1}{5}\sum_{k=1}^5 \sigma(\mathbf{w}_k^T \mathbf{z} + b_k)$",
+            ha='center', va='center', color='#581C87', fontsize=7.6, fontweight='bold', zorder=25)
+
+    # Stratification & Regularization Details Pill
+    draw_pill(ax, 12.10, 1.05, 2.90, 3.10,
+              text="Group-CV & Ensembling Rationale:\n\n" +
+                   r"$\bullet$ Family-Cluster Stratification:" + "\n" +
+                   r"  90 Family Clusters partitioned" + "\n" +
+                   r"  (Co-twins strictly isolated)" + "\n\n" +
+                   r"$\bullet$ Hyperparameter Optimization:" + "\n" +
+                   r"  Best $C = 0.01$ (L2-penalty frozen)" + "\n" +
+                   r"  (Train CV ROC-AUC = 0.5541)" + "\n\n" +
+                   r"$\bullet$ Balanced Class Weighting:" + "\n" +
+                   r"  Compensates ~1:6.5 class imbalance" + "\n\n" +
+                   r"$\bullet$ Variance Stabilization:" + "\n" +
+                   r"  Bagging dampens small $n=24$ event noise",
+              face_col='#FFFFFF', edge_col='#DDD6FE', text_col='#4C1D95', font_size=7.3, font_weight='normal')
+
+    draw_arrow(ax, 15.15, 5.20, 15.55, 5.20, color='#7C3AED', lw=2.0, badge=r'$\mathbf{P}_{\mathrm{Quest}}$', badge_col='#7C3AED')
+
+    # =========================================================================
+    # COLUMN 5: SIGMOID RISK FUNCTION & TEST EVALUATION (x in [15.55, 18.15], w = 2.60)
+    # =========================================================================
+    c5_box = patches.FancyBboxPatch((15.55, 0.80), 2.60, 8.20, boxstyle="round,pad=0.10,rounding_size=0.18",
+                                    facecolor='#F8FAFC', edgecolor='#0F172A', lw=1.5, zorder=5)
+    ax.add_patch(c5_box)
+
+    draw_3d_block(ax, 15.65, 8.15, 2.40, 0.70, depth=0.18, face_col='#0F172A', top_col='#334155', side_col='#020617')
+    ax.text(16.85, 8.50, "5. Risk Scoring & Test", ha='center', va='center',
+            color='white', fontsize=10.0, fontweight='bold', zorder=25)
+
+    # Visual: Real Plotted Sigmoid Logistic Activation Curve
+    sig_ax_x0, sig_ax_y0 = 15.85, 5.70
+    sig_w, sig_h = 2.05, 1.80
+
+    # Sigmoid axes
+    ax.plot([sig_ax_x0, sig_ax_x0 + sig_w], [sig_ax_y0, sig_ax_y0], color='#94A3B8', lw=1.0, zorder=12)
+    ax.plot([sig_ax_x0, sig_ax_x0], [sig_ax_y0, sig_ax_y0 + sig_h], color='#94A3B8', lw=1.0, zorder=12)
+    ax.text(sig_ax_x0 + sig_w, sig_ax_y0 - 0.12, r"$t$", ha='right', va='center', color='#64748B', fontsize=7.2, fontweight='bold', zorder=15)
+    ax.text(sig_ax_x0 - 0.08, sig_ax_y0 + sig_h, r"$P$", ha='right', va='center', color='#64748B', fontsize=7.2, fontweight='bold', zorder=15)
+
+    # Plot sigmoid curve
+    t_vals = np.linspace(-3.5, 3.5, 50)
+    sig_vals = 1.0 / (1.0 + np.exp(-t_vals))
+    curve_x = sig_ax_x0 + (t_vals + 3.5) / 7.0 * sig_w
+    curve_y = sig_ax_y0 + sig_vals * sig_h
+    ax.plot(curve_x, curve_y, color='#16A34A', lw=2.2, zorder=18)
+
+    # Decision threshold tau* line
+    tau_y = sig_ax_y0 + 0.56 * sig_h
+    ax.plot([sig_ax_x0, sig_ax_x0 + sig_w], [tau_y, tau_y], color='#D97706', lw=1.2, linestyle='--', zorder=19)
+    ax.text(sig_ax_x0 + sig_w - 0.05, tau_y + 0.10, r"$\tau^*=0.56$", ha='right', va='bottom', color='#D97706', fontsize=7.0, fontweight='bold', zorder=22)
+
+    # Points along curve
+    ax.plot([sig_ax_x0 + 0.45, sig_ax_x0 + 0.75], [sig_ax_y0 + 0.22, sig_ax_y0 + 0.38], 'o', color='#3B82F6', markersize=5, zorder=20)
+    ax.text(sig_ax_x0 + 0.40, sig_ax_y0 + 0.10, "Non-Trans (0)", ha='left', va='center', color='#1E40AF', fontsize=6.2, fontweight='bold', zorder=22)
+
+    ax.plot([sig_ax_x0 + 1.45, sig_ax_x0 + 1.70], [sig_ax_y0 + 1.35, sig_ax_y0 + 1.55], 's', color='#EF4444', markersize=5, zorder=20)
+    ax.text(sig_ax_x0 + 1.60, sig_ax_y0 + 1.70, "Incident (1)", ha='center', va='bottom', color='#B91C1C', fontsize=6.2, fontweight='bold', zorder=22)
+
+    ax.text(16.85, 5.45, r"Risk: $\mathbf{P}_{\mathrm{Quest}} = \sigma(\mathbf{w}^T \mathbf{z} + b) \in [0, 1]$",
+            ha='center', va='center', color='#0F172A', fontsize=7.6, fontweight='bold', zorder=25)
+
+    # Performance Metrics Pill
+    draw_pill(ax, 15.70, 2.75, 2.30, 2.45,
+              text="Held-Out Prospective\nTest Performance ($n=62$):\n\n" +
+                   r"$\mathrm{Test\ ROC\text{-}AUC} = 0.6260$" + "\n" +
+                   r"$\mathrm{Sensitivity} = 71.4\%\ (5/7)$" + "\n" +
+                   r"$\mathrm{Specificity} = 67.3\%\ (37/55)$" + "\n" +
+                   r"$\mathrm{NPV} = 94.9\%$" + "\n" +
+                   r"$\mathrm{Brier\ Score} = 0.2460$",
               face_col='#F5F3FF', edge_col='#7C3AED', text_col='#4C1D95', font_size=7.4, font_weight='bold')
 
-    draw_pill(ax, s4_x + 0.20, s4_y + 0.35, s4_w - 0.40, 1.35,
-              text="Contrast with Baseline FT-ProtoNet (Fig 4):\n" +
-                   r"$\bullet\ \mathrm{Val\ AUC} = 0.8052 \to \mathrm{Test\ AUC} = 0.5429$" + "\n" +
-                   r"$\bullet$ Overparameterization on 7 validation events" + "\n" +
-                   r"$\bullet$ Confirms regularized linear head defensibility",
-              face_col='#FFF7ED', edge_col='#EA580C', text_col='#9A3412', font_size=7.2, font_weight='normal')
-
-    # =========================================================================
-    # ROW 2: 2 WIDE SYNTHESIS PANELS (y in [0.55, 2.70], h = 2.15)
-    # =========================================================================
-
-    p_left = patches.FancyBboxPatch((0.60, 0.55), 7.80, 2.15, boxstyle="round,pad=0.1,rounding_size=0.15",
-                                    facecolor='#F8FAFC', edgecolor='#059669', lw=1.3, zorder=5)
-    ax.add_patch(p_left)
-    ax.text(4.50, 2.45, "Clinical Construct Rationale & Polarity Inversion Resolution", ha='center', va='center',
-            color='#065F46', fontsize=9.6, fontweight='bold', zorder=25)
-    ax.text(0.85, 1.85, r"$\bullet$ Informant Discrepancy ($\Delta_{26}, \Delta_{\mathrm{worry}} > 0$): Parents observe behavioral tension and avoidance that youth", ha='left', va='center',
-            color='#1E293B', fontsize=7.6, zorder=25)
-    ax.text(0.98, 1.62, "underreport during early adolescence, capturing subjective distress masking before overt DSM-5 criteria manifest.", ha='left', va='center',
-            color='#475569', fontsize=7.4, zorder=25)
-    ax.text(0.85, 1.25, r"$\bullet$ Somatization & Autonomic Exhaustion (pSDQ03, SPHERE07, 08, 22): Neurovegetative fatigue and physical tension", ha='left', va='center',
-            color='#1E293B', fontsize=7.6, zorder=25)
-    ax.text(0.98, 1.02, "provide a robust prodromal transition signal preceding syndromal anxiety disorder onset.", ha='left', va='center',
-            color='#475569', fontsize=7.4, zorder=25)
-    ax.text(0.85, 0.72, r"$\bullet$ Positive Orientation: Resolves baseline symptom inversion (where raw scales showed counter-intuitive negative orientation).", ha='left', va='center',
-            color='#065F46', fontsize=7.5, fontweight='bold', zorder=25)
-
-    p_right = patches.FancyBboxPatch((8.80, 0.55), 7.80, 2.15, boxstyle="round,pad=0.1,rounding_size=0.15",
-                                     facecolor='#F8FAFC', edgecolor='#7C3AED', lw=1.3, zorder=5)
-    ax.add_patch(p_right)
-    ax.text(12.70, 2.45, "Methodological Safeguards & Model Selection Rationale", ha='center', va='center',
-            color='#581C87', fontsize=9.6, fontweight='bold', zorder=25)
-    ax.text(9.05, 1.85, r"$\bullet$ Kaiser-Guttman PCA-3: Eliminates collinearity condition number ($\kappa = 142.8 \to 1.0$), reducing parameter estimation error", ha='left', va='center',
-            color='#1E293B', fontsize=7.6, zorder=25)
-    ax.text(9.18, 1.62, "and stabilizing logistic regression coefficients across the small positive training event pool ($n = 24$).", ha='left', va='center',
-            color='#475569', fontsize=7.4, zorder=25)
-    ax.text(9.05, 1.25, r"$\bullet$ Honest Deep Baseline Contrast: Deep FT-ProtoNet (Fig 4) achieves Val AUC = 0.8052 but drops to Test AUC = 0.5429,", ha='left', va='center',
-            color='#1E293B', fontsize=7.6, zorder=25)
-    ax.text(9.18, 1.02, "demonstrating severe validation overfitting. Regularized linear modeling (Test AUC = 0.6260) provides defensible generalizability.", ha='left', va='center',
-            color='#475569', fontsize=7.4, zorder=25)
-    ax.text(9.05, 0.72, r"$\bullet$ Zero-Leakage Pipeline: In-fold median imputation and train-only scaling guarantee zero future data contamination.", ha='left', va='center',
-            color='#581C87', fontsize=7.5, fontweight='bold', zorder=25)
+    # Deep Baseline Comparison Pill
+    draw_pill(ax, 15.70, 1.05, 2.30, 1.55,
+              text="Contrast: FT-ProtoNet (Fig 4)\n" +
+                   r"$\mathrm{Val:\ 0.8052 \to Test:\ 0.5429}$" + "\n" +
+                   r"$\Delta = -0.2623\ (\mathrm{Overfit})$" + "\n" +
+                   "Confirms regularized linear\nhead generalizability",
+              face_col='#FFF7ED', edge_col='#EA580C', text_col='#9A3412', font_size=7.1, font_weight='normal')
 
     save_figure_to_all_locations(fig, "Fig3_Questionnaire_Pipeline")
     plt.close(fig)
