@@ -481,34 +481,36 @@ def build_fig3():
     ax.text(2.10, 8.50, "1. Psychometrics ($N=304$)", ha='center', va='center',
             color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    # Visual: Psychometric Response Matrix / Multi-Battery Heatmap
+    # Visual: Psychometric Response Matrix / Multi-Battery Heatmap (Spacious 2x2 Grid)
     ax.text(2.10, 7.85, r"$\mathbf{X}_{\mathrm{raw}} \in \mathbb{R}^{304 \times 109}$ (Item Responses)", ha='center', va='center',
             color='#065F46', fontsize=8.4, fontweight='bold', zorder=25)
 
-    # Draw miniature heatstrip representing the 4 psychometric batteries
+    # 2x2 grid for psychometric batteries to eliminate horizontal text crowding
     batt_specs = [
-        ("SCAS-C (44)", 0.65, 0.60, '#0284C7', '#BAE6FD'),
-        ("SCAS-P (38)", 1.30, 0.55, '#0D9488', '#99F6E4'),
-        ("SPHERE (34)", 1.90, 0.55, '#16A34A', '#BBF7D0'),
-        ("SDQ/MFQ", 2.50, 0.50, '#7C3AED', '#DDD6FE')
+        ("SCAS-Child (44)", 0.60, 7.15, 1.45, 0.40, '#0284C7', '#BAE6FD'),
+        ("SCAS-Parent (38)", 2.15, 7.15, 1.45, 0.40, '#0D9488', '#99F6E4'),
+        ("SPHERE-34 (34)", 0.60, 6.45, 1.45, 0.40, '#16A34A', '#BBF7D0'),
+        ("SDQ / MFQ Scales", 2.15, 6.45, 1.45, 0.40, '#7C3AED', '#DDD6FE')
     ]
-    for bname, bx, bw, bcol_dark, bcol_light in batt_specs:
-        ax.add_patch(patches.Rectangle((bx, 7.45), bw, 0.22, facecolor=bcol_dark, edgecolor='none', zorder=15))
-        ax.text(bx + bw/2, 7.56, bname, ha='center', va='center', color='white', fontsize=6.2, fontweight='bold', zorder=20)
-        np.random.seed(int(bx * 100))
-        for r in range(5):
-            ry = 7.35 - (r + 1) * 0.18
-            for c in range(3):
-                cx_pos = bx + c * (bw / 3.0) + 0.02
-                val = np.random.rand()
-                tile_col = bcol_dark if val > 0.6 else (bcol_light if val > 0.25 else '#F1F5F9')
-                ax.add_patch(patches.Rectangle((cx_pos, ry), bw/3.0 - 0.04, 0.14, facecolor=tile_col, edgecolor='#CBD5E1', lw=0.4, zorder=12))
+    for bname, bx, by, bw, bh, bcol_dark, bcol_light in batt_specs:
+        b_card = patches.FancyBboxPatch((bx, by), bw, bh, boxstyle="round,pad=0.03,rounding_size=0.06",
+                                        facecolor=bcol_dark, edgecolor='none', zorder=15)
+        ax.add_patch(b_card)
+        ax.text(bx + bw/2.0, by + bh/2.0, bname, ha='center', va='center',
+                color='white', fontsize=6.8, fontweight='bold', zorder=20)
+        # Miniature item response indicator tiles underneath each battery
+        np.random.seed(int(bx * 100 + by * 10))
+        for r_tile in range(7):
+            tile_x = bx + r_tile * (bw / 7.0) + 0.02
+            tile_col = bcol_dark if np.random.rand() > 0.5 else bcol_light
+            ax.add_patch(patches.Rectangle((tile_x, by - 0.16), bw/7.0 - 0.04, 0.11,
+                                           facecolor=tile_col, edgecolor='#CBD5E1', lw=0.3, zorder=12))
 
-    ax.text(2.10, 6.10, r"$N = 304$ Adolescents (152 Twin Pairs)" + "\n" + r"109 Item-Level Standardized Assessments",
-            ha='center', va='center', color='#334155', fontsize=7.4, fontweight='bold', zorder=25)
+    ax.text(2.10, 6.00, r"$N = 304$ Adolescents (152 Twin Pairs)" + "\n" + r"109 Item-Level Standardized Assessments",
+            ha='center', va='center', color='#334155', fontsize=7.2, fontweight='bold', zorder=25)
 
     # In-Fold Preprocessing Container
-    draw_pill(ax, 0.60, 1.05, 3.00, 4.70,
+    draw_pill(ax, 0.60, 1.05, 3.00, 4.60,
               text="Leakage-Free In-Fold Processing:\n\n" +
                    r"$\bullet$ In-Fold Median Imputation:" + "\n" +
                    r"  Imputation values ($\hat{\mu}_{\mathrm{tr}}$) derived" + "\n" +
@@ -541,34 +543,34 @@ def build_fig3():
                                     facecolor='#FFFFFF', edgecolor='#16A34A', lw=1.2, zorder=10)
     ax.add_patch(p1_box)
     ax.add_patch(patches.Rectangle((4.30, 5.95), 0.12, 1.95, facecolor='#16A34A', edgecolor='none', zorder=12))
-    ax.text(4.55, 7.65, "A. Somatization & Autonomic Fatigue", ha='left', va='center', color='#15803D', fontsize=8.2, fontweight='bold', zorder=20)
-    ax.text(4.55, 6.75, r"$\bullet$ pSDQ03: Somatic complaints / headaches" + "\n" +
-                        r"$\bullet$ SPHERE07: Mental exhaustion / concentration" + "\n" +
-                        r"$\bullet$ SPHERE08: Tension headaches / fatigue" + "\n" +
-                        r"$\bullet$ SPHERE22: Muscular weakness & aches",
-            ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
+    ax.text(4.46, 7.65, "A. Somatization & Autonomic Fatigue", ha='left', va='center', color='#15803D', fontsize=8.2, fontweight='bold', zorder=20)
+    ax.text(4.46, 6.75, r"$\bullet$ pSDQ03: Somatic complaints & headaches" + "\n" +
+                        r"$\bullet$ SPHERE07: Mental exhaustion & fatigue" + "\n" +
+                        r"$\bullet$ SPHERE08: Tension headaches & aches" + "\n" +
+                        r"$\bullet$ SPHERE22: Muscular weakness & fatigue",
+            ha='left', va='center', color='#1E293B', fontsize=6.8, zorder=20)
 
     # Pod 2: Social Fear
     p2_box = patches.FancyBboxPatch((4.30, 3.85), 3.10, 1.85, boxstyle="round,pad=0.08,rounding_size=0.12",
                                     facecolor='#FFFFFF', edgecolor='#0284C7', lw=1.2, zorder=10)
     ax.add_patch(p2_box)
     ax.add_patch(patches.Rectangle((4.30, 3.85), 0.12, 1.85, facecolor='#0284C7', edgecolor='none', zorder=12))
-    ax.text(4.55, 5.45, "B. Social Evaluative Fear", ha='left', va='center', color='#0369A1', fontsize=8.2, fontweight='bold', zorder=20)
-    ax.text(4.55, 4.65, r"$\bullet$ pSCAS_socpho_score: Parent social fear" + "\n" +
+    ax.text(4.46, 5.45, "B. Social Evaluative Fear", ha='left', va='center', color='#0369A1', fontsize=8.2, fontweight='bold', zorder=20)
+    ax.text(4.46, 4.65, r"$\bullet$ pSCAS_socpho_score: Parent social fear" + "\n" +
                         r"$\bullet$ SCAS_socpho_score: Child social fear" + "\n" +
                         r"$\bullet$ pSCAS31: Fear of negative evaluation",
-            ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
+            ha='left', va='center', color='#1E293B', fontsize=6.8, zorder=20)
 
     # Pod 3: Discrepancies
     p3_box = patches.FancyBboxPatch((4.30, 1.85), 3.10, 1.75, boxstyle="round,pad=0.08,rounding_size=0.12",
                                     facecolor='#FFFFFF', edgecolor='#D97706', lw=1.2, zorder=10)
     ax.add_patch(p3_box)
     ax.add_patch(patches.Rectangle((4.30, 1.85), 0.12, 1.75, facecolor='#D97706', edgecolor='none', zorder=12))
-    ax.text(4.55, 3.35, "C. Cross-Informant Discrepancy", ha='left', va='center', color='#B45309', fontsize=8.2, fontweight='bold', zorder=20)
-    ax.text(4.55, 2.55, r"$\bullet\ \mathrm{diff\_26} = \mathrm{pSCAS26} - \mathrm{SCAS26}$ (Somatic gap)" + "\n" +
-                        r"$\bullet\ \mathrm{diff\_worry} = \mathrm{pSCAS31} - \mathrm{SCAS31}$ (Worry gap)" + "\n" +
+    ax.text(4.46, 3.35, "C. Cross-Informant Discrepancy", ha='left', va='center', color='#B45309', fontsize=8.2, fontweight='bold', zorder=20)
+    ax.text(4.46, 2.55, r"$\bullet\ \Delta_{26} = \mathrm{pSCAS26} - \mathrm{SCAS26}$ (Somatic gap)" + "\n" +
+                        r"$\bullet\ \Delta_{\mathrm{worry}} = \mathrm{pSCAS31} - \mathrm{SCAS31}$ (Worry gap)" + "\n" +
                         r"Captures masked subjective distress in youth",
-            ha='left', va='center', color='#1E293B', fontsize=7.2, zorder=20)
+            ha='left', va='center', color='#1E293B', fontsize=6.8, zorder=20)
 
     # Bottom Grounding Banner
     draw_pill(ax, 4.30, 1.05, 3.10, 0.65,
@@ -588,27 +590,28 @@ def build_fig3():
     ax.text(9.75, 8.50, r"3. PCA-3 Eigenspace ($\mathbb{R}^3$)", ha='center', va='center',
             color='white', fontsize=10.0, fontweight='bold', zorder=25)
 
-    # Visual: Authentic 3D Isometric Cartesian Eigenspace with Orthogonal Axes
-    orig_x, orig_y = 9.75, 6.15
-    # Draw 3D axis arrows
-    ax.annotate('', xy=(orig_x + 1.25, orig_y - 0.45), xytext=(orig_x, orig_y),
+    # Visual: Authentic 3D Isometric Cartesian Eigenspace with Safe Boundaries
+    orig_x, orig_y = 9.75, 6.20
+
+    # Draw 3D axis arrows (compact geometry to guarantee zero border collision)
+    ax.annotate('', xy=(orig_x + 0.65, orig_y - 0.35), xytext=(orig_x, orig_y),
                 arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#0284C7'), zorder=20)
-    ax.text(orig_x + 1.30, orig_y - 0.55, r"$\mathbf{z}_1\ (\lambda_1 = 3.12,\ 34.5\%)$", ha='left', va='center',
-            color='#0284C7', fontsize=7.8, fontweight='bold', zorder=25)
+    ax.text(orig_x + 0.70, orig_y - 0.35, r"$\mathbf{z}_1\ (34.5\%)$", ha='left', va='center',
+            color='#0284C7', fontsize=7.2, fontweight='bold', zorder=25)
 
-    ax.annotate('', xy=(orig_x, orig_y + 1.45), xytext=(orig_x, orig_y),
+    ax.annotate('', xy=(orig_x, orig_y + 1.10), xytext=(orig_x, orig_y),
                 arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#10B981'), zorder=20)
-    ax.text(orig_x, orig_y + 1.60, r"$\mathbf{z}_2\ (\lambda_2 = 1.54,\ 17.0\%)$", ha='center', va='bottom',
-            color='#047857', fontsize=7.8, fontweight='bold', zorder=25)
+    ax.text(orig_x, orig_y + 1.15, r"$\mathbf{z}_2\ (17.0\%)$", ha='center', va='bottom',
+            color='#047857', fontsize=7.2, fontweight='bold', zorder=25)
 
-    ax.annotate('', xy=(orig_x - 1.20, orig_y - 0.40), xytext=(orig_x, orig_y),
+    ax.annotate('', xy=(orig_x - 0.65, orig_y - 0.30), xytext=(orig_x, orig_y),
                 arrowprops=dict(arrowstyle="-|>", lw=2.0, color='#8B5CF6'), zorder=20)
-    ax.text(orig_x - 1.25, orig_y - 0.50, r"$\mathbf{z}_3\ (\lambda_3 = 1.07,\ 11.8\%)$", ha='right', va='center',
-            color='#6D28D9', fontsize=7.8, fontweight='bold', zorder=25)
+    ax.text(orig_x - 0.70, orig_y - 0.30, r"$\mathbf{z}_3\ (11.8\%)$", ha='right', va='center',
+            color='#6D28D9', fontsize=7.2, fontweight='bold', zorder=25)
 
     # Draw 3D projected variance ellipsoids
-    ell1 = patches.Ellipse((orig_x, orig_y), 1.90, 0.75, angle=-18, fill=True, facecolor='#BAE6FD', edgecolor='#0284C7', alpha=0.35, lw=1.2, zorder=12)
-    ell2 = patches.Ellipse((orig_x, orig_y), 1.30, 0.55, angle=25, fill=True, facecolor='#A7F3D0', edgecolor='#10B981', alpha=0.35, lw=1.2, zorder=13)
+    ell1 = patches.Ellipse((orig_x, orig_y), 1.60, 0.65, angle=-18, fill=True, facecolor='#BAE6FD', edgecolor='#0284C7', alpha=0.35, lw=1.2, zorder=12)
+    ell2 = patches.Ellipse((orig_x, orig_y), 1.10, 0.45, angle=25, fill=True, facecolor='#A7F3D0', edgecolor='#10B981', alpha=0.35, lw=1.2, zorder=13)
     ax.add_patch(ell1)
     ax.add_patch(ell2)
 
